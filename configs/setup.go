@@ -1,11 +1,5 @@
 package configs
 
-import "github.com/gin-gonic/gin"
-
 func ConnectDB() {
-
-}
-
-func RunServer(Router **gin.Engine) {
-	(*Router).Run(EnvPORT())
+	// CONNECT TO POSTGRES DB, *figure out redis and how its used*
 }

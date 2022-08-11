@@ -1,15 +1,14 @@
 package main
 
 import (
-	"github.com/callummclu/Gocial-Media-Platform/configs"
 	"github.com/callummclu/Gocial-Media-Platform/controllers"
-	"github.com/gin-gonic/gin"
 )
 
-var Router *gin.Engine
-
 func main() {
+
+	// https://medium.com/@lsg.seritili/go-golang-social-network-part-1-4c73dd484c07
+	// ^^ SOME MINOR ADVICE IN HERE ^^
+
 	// configs.ConnectDB()
 	controllers.BaseController()
-	configs.RunServer(&Router)
 }
