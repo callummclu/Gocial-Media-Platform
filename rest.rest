@@ -1,0 +1,18 @@
+POST http://localhost:3000/user
+
+{
+    "name":"callum",
+    "surname":"mcluskey",
+    "email":"callummcluskey100@gmail.com",
+    "password":"010305",
+    "username":"callummclu"
+}
+
+###
+
+POST http://localhost:3000/auth/login
+
+{
+    "username":"callummclu",
+    "password":"010305"
+}
