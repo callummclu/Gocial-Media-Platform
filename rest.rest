@@ -1,11 +1,11 @@
-POST http://localhost:3000/user
+POST http://localhost:3001/user
 
 {
-    "name":"callum",
-    "surname":"mcluskey",
-    "email":"callummcluskey100@gmail.com",
+    "name":"tets",
+    "surname":"test",
+    "email":"test@email.com",
     "password":"010305",
-    "username":"callummclu"
+    "username":"test name"
 }
 
 ###
@@ -19,4 +19,4 @@ POST http://localhost:3001/auth/login
 
 ###
 
-GET http://localhost:3001/auth/
+GET http://localhost:3001/user?itemsPerPage=3

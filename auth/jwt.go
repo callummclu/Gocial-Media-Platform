@@ -13,7 +13,7 @@ func GenerateJWT(username string) (string, error) {
 	claims["user"] = username
 	claims["aud"] = "go-social.jwtgo.io"
 	claims["iss"] = "jwtgo.io"
-	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	newToken, err := token.SignedString([]byte(os.Getenv("JWT_KEY")))

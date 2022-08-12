@@ -1,38 +1,88 @@
 package services
 
 import (
+	"errors"
+	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/badoux/checkmail"
+	"github.com/callummclu/Gocial-Media-Platform/configs"
 	"github.com/callummclu/Gocial-Media-Platform/models"
 	"github.com/gin-gonic/gin"
 )
 
 func GetAllUsers(c *gin.Context) {
 	var users []models.ReturnedUser
+	db, err := configs.GetDB()
+	if err != nil {
+		err = errors.New("DB connection error")
+		c.JSON(400, gin.H{"error": err})
+	}
+	var query string = c.Query("searchParams")
 
-	// takes query params
-	// THE SQL SHOULD SEARCH FOR
-	// (
-	// 	SELECT username, name, surname
-	// 	FROM users
-	// 	WHERE strpos(username, $1) > 0
-	// 		OR strpos(name, $1) > 0
-	// 		OR strpos(surname, $1) > 0
-	// )
-	// including searchPhrase
-	// including page no
-	// including items per page
-	// i.e. domain.com/?searchPhrase=callum&page=1&itemsPerPage=20
+	limit, err := strconv.Atoi(c.Query("itemsPerPage"))
+
+	if err != nil {
+		limit = 20
+	}
+
+	offset, err := strconv.Atoi(c.Query("page"))
+
+	if err != nil {
+		offset = 1
+	}
+
+	if offset < 1 {
+		offset = 1
+	}
+
+	offset = (offset - 1) * limit
+
+	rows, err := db.Query("select username, name, surname from users where strpos(username, $1) > 0 OR strpos(name, $1) > 0 OR strpos(surname, $1) > 0 LIMIT $2 OFFSET $3", query, limit, offset)
+
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var (
+			Username string
+			Name     string
+			Surname  string
+		)
+
+		if err := rows.Scan(&Username, &Name, &Surname); err != nil {
+			fmt.Print(err)
+		}
+
+		users = append(users, models.ReturnedUser{
+			Username: Username,
+			Surname:  Surname,
+			Name:     Name,
+		})
+	}
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": "Cannot get users"})
+		return
+	}
 
 	c.JSON(200, gin.H{"data": users})
 }
+
 func GetUserByUsername(c *gin.Context) {
 	var user models.ReturnedUser
 
-	// SELECT username, name, surname
-	// FROM users
-	// WHERE username = 'callummclu'
+	var username string = c.Param("username")
+	err := user.GetUserByUsername(username)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": "Cannot find user"})
+		return
+	}
 
 	c.JSON(200, gin.H{"data": user})
 

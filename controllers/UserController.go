@@ -5,19 +5,14 @@ import "github.com/callummclu/Gocial-Media-Platform/services"
 func UserController() {
 	api := Router.Group("user")
 	{
-		//
 		api.GET("", services.GetAllUsers)
-
-		//
-		api.GET(":id", services.GetUserByUsername)
-
-		// TAKES USER MODEL in body
+		api.GET(":username", services.GetUserByUsername)
 		api.POST("", services.CreateNewUser)
 
-		//
+		// NEEDS AUTH MIDDLEWARE
 		api.DELETE("", services.DeleteOneUser)
 
-		//
+		// NEEDS AUTH MIDDLEWARE
 		api.PUT(":id", services.EditOneUser)
 	}
 }

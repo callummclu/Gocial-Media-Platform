@@ -31,6 +31,10 @@ type ReturnedUser struct {
 	Username string `json:"username"`
 }
 
+type ReturnedUsers struct {
+	Users []ReturnedUser `json:"users"`
+}
+
 func NewUser() *User {
 	return new(User)
 }
@@ -112,4 +116,17 @@ func (u *LogInUser) UserLogin() (string, error) {
 		return "", err
 	}
 	return username, err
+}
+
+func (u *ReturnedUser) GetUserByUsername(query string) error {
+	db, err := configs.GetDB()
+	if err != nil {
+		err = errors.New("DB connection error")
+		return err
+	}
+	defer db.Close()
+
+	err = db.QueryRow("SELECT username, name, surname FROM users WHERE username = $1", query).Scan(&u.Name, &u.Surname, &u.Username)
+
+	return err
 }

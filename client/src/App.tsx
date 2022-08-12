@@ -53,7 +53,7 @@ function App() {
   return (
     <>
     <div style={{"display":"flex","alignItems":"center","justifyContent":"center","height":"100vh","background":"#f5f5f5"}}>
-      <Card p="xl" shadow="sm" radius="md" withBorder style={{"width":"400px"}}>
+      <Card p="xl" shadow="sm" radius="md" withBorder style={{"width":"370px"}}>
     
     {loggedIn ? <Button color="red" style={{width:"100%"}} onClick={logOutHandler}>Logout</Button> : (
     <>
