@@ -35,7 +35,7 @@ func CheckJWT(token string) error {
 	} else if !t.Valid {
 		err = errors.New("Invalid token")
 		return err
-	} else if t.Claims.(jwt.MapClaims)["aud"] != "go-social.jwt.go.io" {
+	} else if t.Claims.(jwt.MapClaims)["aud"] != "go-social.jwtgo.io" {
 		err = errors.New("Invalid aud")
 		return err
 	} else if t.Claims.(jwt.MapClaims)["iss"] != "jwtgo.io" {
