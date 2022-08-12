@@ -1,6 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {checkAuth, logIn, logOut} from './helpers/authHelper'
 import { LogInUser } from './Types/auth';
+import { Button, Card, PasswordInput, TextInput, Title, Text} from '@mantine/core'
+import { showNotification } from '@mantine/notifications';
+
 function App() {
 
   const [loggedIn, setLoggedIn] = useState(false)
@@ -13,32 +16,61 @@ function App() {
 
   const logOutHandler = async () => {
     setLoggedIn(await logOut())
+    showNotification({
+      title:"Success",
+      message:"You've logged out successfully"
+    })
   }
 
   useEffect(()=>{
     checkLoggedIn()
   },[])
 
-  async function formSubmitLogin(){
+  async function formSubmitLogin(e:any){
+    e.preventDefault()
     let LoginParams: LogInUser = {
       username: usernameRef.current!.value,
       password: passwordRef.current!.value
     }
-    setLoggedIn(await logIn(LoginParams))
+    let loggedIn = await logIn(LoginParams)
+    if (loggedIn === false) {
+      console.log("error incorrect details")
+      showNotification({
+        title:"Error",
+        message:"Incorrect Details Provided",
+        color:"red"
+      })
+    } else {
+      showNotification({
+        title:"Congrats",
+        message:"You've logged in",
+        color:"green"
+      })
+    }
+    setLoggedIn(loggedIn)
   }
 
   return (
     <>
-    {loggedIn ? <button onClick={logOutHandler}>Logout</button> : (
+    <div style={{"display":"flex","alignItems":"center","justifyContent":"center","height":"100vh","background":"#f5f5f5"}}>
+      <Card p="xl" shadow="sm" radius="md" withBorder style={{"width":"400px"}}>
+    
+    {loggedIn ? <Button color="red" style={{width:"100%"}} onClick={logOutHandler}>Logout</Button> : (
     <>
-      <label>username</label>
-      <input ref={usernameRef} type="name"/>
-      <label>password</label>
-      <input ref={passwordRef} type="password"/>
-      <button onClick={formSubmitLogin}>log in</button>
+    
+        <Title mt={"sm"} order={1}>Log In</Title>
+        <Text mb={"md"} color={"darkgray"}>Enter your details below</Text>
+        <form onSubmit={formSubmitLogin}>
+          <TextInput label="Username" ref={usernameRef} type="name" required/>
+          <PasswordInput label="Password" ref={passwordRef} type="password" required/>
+          <Button mt="sm" type="submit">log in</Button>
+        </form>
+
     </>
+    
     )}
-    {loggedIn && <h1>You are logged In</h1>}
+        </Card>
+    </div>
     </>
   );
 }

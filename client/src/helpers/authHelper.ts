@@ -6,8 +6,12 @@ export async function logIn(loginParams: LogInUser){
         body:JSON.stringify(loginParams)
     }).then(async (res:any) => {
         let res_json = await res.json()
-        localStorage.setItem("gocial_auth_token",res_json.token)
-        return true
+        if (Object.hasOwn(res_json,'error')){
+            return false
+        } else {
+            localStorage.setItem("gocial_auth_token",res_json.token)
+            return true
+        }
     }).catch(()=>{
         return false
     })
