@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/badoux/checkmail"
+	"github.com/callummclu/Gocial-Media-Platform/auth"
 	"github.com/callummclu/Gocial-Media-Platform/configs"
 	"github.com/callummclu/Gocial-Media-Platform/models"
 	"github.com/gin-gonic/gin"
@@ -162,18 +163,46 @@ func DeleteOneUser(c *gin.Context) {
 	db, err := configs.GetDB()
 
 	if err != nil {
-		c.JSON(400, gin.H{"error": err})
+		c.JSON(400, gin.H{"error": "DB Failed to Connect"})
 		return
 	}
-	row, err := db.Query("delete from users where username = $1", user.User)
+
+	stmt, err := db.Prepare("SELECT username,password FROM users WHERE username = $1 OR email = $1")
+	if err != nil {
+		c.JSON(400, gin.H{"error": "Could not find user"})
+		return
+	}
+	defer stmt.Close()
+	var (
+		username string
+		password string
+	)
+	err = stmt.QueryRow(user.User).Scan(&username, &password)
 
 	if err != nil {
-		c.JSON(400, gin.H{"error": err})
+		c.JSON(400, gin.H{"error": "couldnt find user"})
 		return
 	}
 
-	defer row.Close()
+	err = auth.CheckPassword(password, user.Password)
 
-	c.JSON(200, gin.H{"message": "user successfully deleted"})
+	if err != nil {
+		c.JSON(400, gin.H{"error": "Wrong password"})
+		return
+	} else {
+		row, err := db.Query("delete from users where username = $1", user.User)
+
+		if err != nil {
+			c.JSON(400, gin.H{"error": "user doesnt exist"})
+			return
+		}
+
+		defer row.Close()
+		c.JSON(200, gin.H{"message": "user successfully deleted"})
+		return
+	}
+
+	c.JSON(400, gin.H{"error": err})
+	return
 }
 func EditOneUser(c *gin.Context) {}
