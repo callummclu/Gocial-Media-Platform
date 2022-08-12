@@ -1,10 +1,15 @@
 package controllers
 
-import "github.com/callummclu/Gocial-Media-Platform/services"
+import (
+	"github.com/callummclu/Gocial-Media-Platform/middleware"
+	"github.com/callummclu/Gocial-Media-Platform/services"
+)
 
 func UserController() {
 	api := Router.Group("user")
 	{
+		api.Use(middleware.CORSMiddleware("*"))
+
 		api.GET("", services.GetAllUsers)
 		api.GET(":username", services.GetUserByUsername)
 		api.POST("", services.CreateNewUser)
