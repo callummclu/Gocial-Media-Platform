@@ -10,9 +10,13 @@ POST http://localhost:3000/user
 
 ###
 
-POST http://localhost:3000/auth/login
+POST http://localhost:3001/auth/login
 
 {
     "username":"callummclu",
     "password":"010305"
 }
+
+###
+
+GET http://localhost:3001/auth/

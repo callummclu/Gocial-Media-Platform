@@ -8,8 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Logout(c *gin.Context) {}
-
 func LoginUser(c *gin.Context) {
 	user_login := models.NewLogInUser()
 	if err := c.ShouldBindJSON(&user_login); err != nil {
