@@ -3,6 +3,8 @@ package services
 import (
 	"errors"
 	"fmt"
+	"log"
+	"math"
 	"strconv"
 	"strings"
 
@@ -45,7 +47,21 @@ func GetAllUsers(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 	}
 
-	defer rows.Close()
+	var results int
+
+	results_sum, err := db.Query("select count(*) from users where strpos(username, $1) > 0 OR strpos(name, $1) > 0 OR strpos(surname, $1) > 0", query)
+
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+	}
+
+	defer results_sum.Close()
+
+	for results_sum.Next() {
+		if err := results_sum.Scan(&results); err != nil {
+			log.Fatal(err)
+		}
+	}
 
 	for rows.Next() {
 		var (
@@ -70,7 +86,17 @@ func GetAllUsers(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{"data": users})
+	fmt.Print(results, limit, results/limit)
+	if limit < 1 {
+		limit = 1
+	}
+	pages := math.Ceil(float64(results / limit))
+
+	if pages == 0 {
+		pages = 1
+	}
+
+	c.JSON(200, gin.H{"data": users, "results": results, "pages": pages})
 }
 
 func GetUserByUsername(c *gin.Context) {

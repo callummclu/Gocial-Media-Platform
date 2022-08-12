@@ -19,4 +19,8 @@ POST http://localhost:3001/auth/login
 
 ###
 
-GET http://localhost:3001/user?itemsPerPage=3
+GET http://localhost:3001/user/callummclu
+
+###
+
+GET http://localhost:3001/user?itemsPerPage=321

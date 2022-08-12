@@ -4,34 +4,17 @@ import { LogInUser } from '../Types/auth';
 import { Button, Card, PasswordInput, TextInput, Title, Text} from '@mantine/core'
 import { showNotification } from '@mantine/notifications';
 
-function Login(props:any) {
+function Signup(props:any) {
   const [loggedIn, setLoggedIn] = props.loggedIn
   const usernameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
+  const firstNameRef = useRef<HTMLInputElement>(null)
+  const surnameRef = useRef<HTMLInputElement>(null)
+  const confirmPasswordRef = useRef<HTMLInputElement>(null)
 
 
-  async function formSubmitLogin(e:any){
-    e.preventDefault()
-    let LoginParams: LogInUser = {
-      username: usernameRef.current!.value,
-      password: passwordRef.current!.value
-    }
-    let loggedIn = await logIn(LoginParams)
-    if (loggedIn === false) {
-      console.log("error incorrect details")
-      showNotification({
-        title:"Error",
-        message:"Incorrect Details Provided",
-        color:"red"
-      })
-    } else {
-      showNotification({
-        title:"Congrats",
-        message:"You've logged in",
-        color:"green"
-      })
-    }
-    setLoggedIn(loggedIn)
+  async function formSubmitSignup(e:any){
+
   }
 
   return (
@@ -42,13 +25,16 @@ function Login(props:any) {
     {loggedIn ? window.location.href = window.location.origin : (
     <>
     
-        <Title mt={"sm"} order={1}>Log In</Title>
+        <Title mt={"sm"} order={1}>Signup</Title>
         <Text mb={"md"} color={"darkgray"}>Enter your details below</Text>
-        <form onSubmit={formSubmitLogin}>
+        <form onSubmit={formSubmitSignup}>
+
           <TextInput label="Username" ref={usernameRef} type="name" required/>
+          <TextInput label="First Name" ref={firstNameRef} type="name" required/>
+          <TextInput label="Surname" ref={surnameRef} type="name" required/>
           <PasswordInput label="Password" ref={passwordRef} type="password" required/>
-          <Text mt="sm">Don't have an account? sign up <a href="/signup">here</a></Text>
-          <Button mt="sm" type="submit">log in</Button>
+          <PasswordInput label="Confirm Password" ref={confirmPasswordRef} type="password" required/>
+          <Button mt="sm" type="submit">Sign up</Button>
         </form>
 
     </>
@@ -60,4 +46,4 @@ function Login(props:any) {
   );
 }
 
-export default Login;
+export default Signup;

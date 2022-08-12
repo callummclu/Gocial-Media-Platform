@@ -8,6 +8,8 @@ import { Navbar } from './components/navbar';
 import Home from './pages/Home';
 import Login from './pages/login';
 import SearchResults from './pages/SearchResults';
+import UserProfile from './pages/UserProfile';
+import Signup from './pages/signup';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -26,7 +28,9 @@ function App() {
       <Routes>
         <Route path="" element={<Home/>}/>
         <Route path="login" element={<Login loggedIn={[loggedIn,setLoggedIn]}/>}/>
+        <Route path="signup" element={<Signup loggedIn={[loggedIn,setLoggedIn]}/>}/>
         <Route path="results" element={<SearchResults/>}/>
+        <Route path="users/:username" element={<UserProfile/>}/>
       </Routes>
     </BrowserRouter>
   )

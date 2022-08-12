@@ -1,4 +1,4 @@
-import { Button, Container, Divider, Group, TextInput } from '@mantine/core'
+import { Button, Container, Divider, Group, TextInput, Title } from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -35,18 +35,16 @@ export const Navbar = (props:any) => {
     return (
         <>
         <NavbarStyled>
-            <h1 onClick={()=>window.location.href = window.location.origin}>Gocial Media</h1>            
-            {loggedIn ? <Button color="red" onClick={logOutHandler}>Logout</Button> : <Button color="green" onClick={logInHandler}>Login</Button>}
-
-        </NavbarStyled>
-        <Container>
-        <Group style={{display:"flex","justifyContent":"center",height:"70px"}}>
+            <Title onClick={()=>window.location.href = window.location.origin}>Gocial Media</Title> 
+            <Group style={{display:"flex","justifyContent":"center",height:"70px"}}>
                 <form onSubmit={searchUsersSubmit}>
                     <TextInput placeholder="search users..." ref={searchQueryRef}/>    
                 </form>
-        </Group>
-        <Divider variant='dashed'/>
-        </Container>
+                   
+            {loggedIn ? <Button color="red" onClick={logOutHandler}>Logout</Button> : <Button color="green" onClick={logInHandler}>Login</Button>}
+            </Group>
+        </NavbarStyled>
+        <Divider pb="xl"/>
         
         </>
     )
@@ -59,9 +57,7 @@ const NavbarStyled = styled.div`
     padding-left:10px;
     padding-right:10px;
     height:70px;
-    background:navy;
-    color:white;
-    font-family:Verdana;
+
 
     & h1{
         cursor:pointer;
