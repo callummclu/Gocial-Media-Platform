@@ -1,11 +1,20 @@
 POST http://localhost:3001/user
 
 {
-    "name":"tets",
+    "name":"test123",
     "surname":"test",
-    "email":"test@email.com",
-    "password":"010305",
-    "username":"test name"
+    "email":"test123@email.com",
+    "password":"123",
+    "username":"321"
+}
+
+###
+
+DELETE http://localhost:3001/user
+
+{
+    "username":"321",
+    "password":"123"
 }
 
 ###
@@ -23,4 +32,4 @@ GET http://localhost:3001/user/callummclu
 
 ###
 
-GET http://localhost:3001/user?itemsPerPage=321
+GET http://localhost:3001/user

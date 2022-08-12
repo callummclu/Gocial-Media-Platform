@@ -155,5 +155,25 @@ func CreateNewUser(c *gin.Context) {
 		"message": "User registered successfully",
 	})
 }
-func DeleteOneUser(c *gin.Context) {}
-func EditOneUser(c *gin.Context)   {}
+func DeleteOneUser(c *gin.Context) {
+	var user models.LogInUser
+	c.BindJSON(&user)
+
+	db, err := configs.GetDB()
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+		return
+	}
+	row, err := db.Query("delete from users where username = $1", user.User)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+		return
+	}
+
+	defer row.Close()
+
+	c.JSON(200, gin.H{"message": "user successfully deleted"})
+}
+func EditOneUser(c *gin.Context) {}
