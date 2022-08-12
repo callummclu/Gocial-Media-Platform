@@ -21,7 +21,7 @@ type User struct {
 }
 
 type LogInUser struct {
-	User     string `json:"user"`
+	User     string `json:"username"`
 	Password string `json:"password"`
 }
 
@@ -94,7 +94,7 @@ func (u *LogInUser) UserLogin() (string, error) {
 		username string
 		password string
 	)
-	err = stmt.QueryRow(u.User, u.User).Scan(&username)
+	err = stmt.QueryRow(u.User).Scan(&username, &password)
 
 	if err != nil {
 		return "", err
