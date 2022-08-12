@@ -8,8 +8,36 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetAllUsers(c *gin.Context)       {}
-func GetUserByUsername(c *gin.Context) {}
+func GetAllUsers(c *gin.Context) {
+	var users []models.ReturnedUser
+
+	// takes query params
+	// THE SQL SHOULD SEARCH FOR
+	// (
+	// 	SELECT username, name, surname
+	// 	FROM users
+	// 	WHERE strpos(username, $1) > 0
+	// 		OR strpos(name, $1) > 0
+	// 		OR strpos(surname, $1) > 0
+	// )
+	// including searchPhrase
+	// including page no
+	// including items per page
+	// i.e. domain.com/?searchPhrase=callum&page=1&itemsPerPage=20
+
+	c.JSON(200, gin.H{"data": users})
+}
+func GetUserByUsername(c *gin.Context) {
+	var user models.ReturnedUser
+
+	// SELECT username, name, surname
+	// FROM users
+	// WHERE username = 'callummclu'
+
+	c.JSON(200, gin.H{"data": user})
+
+}
+
 func CreateNewUser(c *gin.Context) {
 	user := models.NewUser()
 	if err := c.ShouldBindJSON(&user); err != nil {

@@ -10,3 +10,13 @@ func CheckPassword(hashedPassword, password string) error {
 	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 	return err
 }
+
+// NOT CURRENTLY IN USE
+func ReplacePassword(hashedPassword, password, newPassword string) ([]byte, error) {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+	if err != nil {
+		return nil, err
+	}
+	return bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.MinCost)
+
+}

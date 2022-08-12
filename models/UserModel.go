@@ -25,6 +25,12 @@ type LogInUser struct {
 	Password string `json:"password"`
 }
 
+type ReturnedUser struct {
+	Name     string `json:"name"`
+	Surname  string `json:"surname"`
+	Username string `json:"username"`
+}
+
 func NewUser() *User {
 	return new(User)
 }
