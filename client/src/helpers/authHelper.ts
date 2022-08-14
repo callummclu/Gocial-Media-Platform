@@ -1,4 +1,4 @@
-import { LogInUser } from "../Types/auth";
+import { LogInUser, SignUpUser } from "../Types/auth";
 
 export async function logIn(loginParams: LogInUser){
     return fetch(`${process.env.REACT_APP_BACKEND_URI}/auth/login`,{
@@ -11,6 +11,22 @@ export async function logIn(loginParams: LogInUser){
         } else {
             localStorage.setItem("gocial_auth_token",res_json.token)
             return true
+        }
+    }).catch(()=>{
+        return false
+    })
+}
+
+export async function signup(signupParams: SignUpUser){
+    return fetch(`${process.env.REACT_APP_BACKEND_URI}/user`,{
+        method:"POST",
+        body:JSON.stringify(signupParams)
+    }).then(async (res:any) => {
+        let res_json = await res.json()
+        if (Object.hasOwn(res_json,'error')){
+            return false
+        } else {
+            return logIn({username:signupParams.username,password:signupParams.password})
         }
     }).catch(()=>{
         return false

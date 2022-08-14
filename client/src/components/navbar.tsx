@@ -1,4 +1,4 @@
-import { Button, Container, Divider, Group, TextInput, Title } from '@mantine/core'
+import { Button, Text, Divider, Group, TextInput, Title } from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -42,7 +42,7 @@ export const Navbar = (props:any) => {
                     <TextInput placeholder="search users..." ref={searchQueryRef}/>    
                 </form>
             <Group style={{display:"flex","justifyContent":"center",height:"70px"}}>
-            {username}
+            <Text>{username}</Text>
             {loggedIn ? <Button color="red" onClick={logOutHandler}>Logout</Button> : <Button color="green" onClick={logInHandler}>Login</Button>}
             </Group>
         </NavbarStyled>
