@@ -4,6 +4,8 @@ go 1.18
 
 require github.com/gin-gonic/gin v1.8.1
 
+require github.com/jinzhu/inflection v1.0.0 // indirect
+
 require (
 	github.com/badoux/checkmail v1.2.1
 	github.com/gin-contrib/sse v0.1.0 // indirect
@@ -12,6 +14,7 @@ require (
 	github.com/go-playground/validator/v10 v10.10.0 // indirect
 	github.com/goccy/go-json v0.9.7 // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.2
+	github.com/jinzhu/gorm v1.9.16
 	github.com/joho/godotenv v1.4.0
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect

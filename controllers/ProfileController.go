@@ -10,6 +10,6 @@ func ProfileController() {
 	{
 		api.Use(middleware.CORSMiddleware("*"))
 
-		api.GET("", services.GetProfileByUsername)
+		api.GET(":username", services.GetProfileByUsername)
 	}
 }

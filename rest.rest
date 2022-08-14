@@ -32,4 +32,4 @@ GET http://localhost:3001/user/callummclu
 
 ###
 
-GET http://localhost:3001/user
+GET http://localhost:3001/profile

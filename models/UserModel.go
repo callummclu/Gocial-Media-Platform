@@ -71,11 +71,20 @@ func (u *User) SaveUser() error {
 			}
 			//Add the new user
 			insert_stmt, err := db.Prepare("INSERT INTO users (name,surname,username,email,password) VALUES ($1,$2,$3,$4,$5)")
+
 			if err != nil {
 				return err
 			}
 			defer insert_stmt.Close()
 			_, err = insert_stmt.Exec(u.Name, u.Surname, u.Username, u.Email, hashedPassword)
+
+			profile := NewProfile()
+
+			err = profile.SaveProfile(u.Username)
+
+			if err != nil {
+				return err
+			}
 
 			return err
 		} else {
