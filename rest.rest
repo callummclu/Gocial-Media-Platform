@@ -1,11 +1,11 @@
 POST http://localhost:3001/user
 
 {
-    "name":"test123",
-    "surname":"test",
-    "email":"test123@email.com",
+    "name":"rowan",
+    "surname":"rowan",
+    "email":"abcde@email.com",
     "password":"123",
-    "username":"321"
+    "username":"fedcba"
 }
 
 ###
@@ -32,4 +32,4 @@ GET http://localhost:3001/user/callummclu
 
 ###
 
-GET http://localhost:3001/profile
+GET http://localhost:3001/profile/fedcba

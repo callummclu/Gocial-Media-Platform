@@ -9,6 +9,20 @@ import (
 type Profile struct {
 	ID       int64  `json:"-";sql:"type:string REFERENCES users(username)"`
 	Username string `json:"username"`
+	// NEEDS
+	// Posts []Post `json:"posts"`
+	// Description string `json:"description"`
+	// Name string `json:"name"`
+	// Freinds []User `json:"friends"`
+
+	// DISPLAYED AS
+	// firstname 	Lastname 	@username	FRIENDS	FRIENDS
+	// description 	description description	FRIENDS	FRIENDS
+	// ------------------------------------	FRIENDS	FRIENDS
+	// POSTS 		POSTS 		POSTS		FRIENDS	FRIENDS
+	// POST			POSTS		POSTS		FRIENDS	FRIENDS
+	// POST			POSTS		POSTS		FRIENDS	FRIENDS
+
 }
 
 func (p *Profile) GetProfileByUsername(query string) error {
