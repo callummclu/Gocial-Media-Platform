@@ -55,7 +55,9 @@ func CheckUser(c *gin.Context) {
 		})
 		return
 	}
-	err := auth.CheckJWT(token)
+	var username string
+
+	err := auth.CheckJWT(token, &username)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"error": err.Error(),
@@ -64,5 +66,8 @@ func CheckUser(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{
 		"isAuthenticated": true,
+		"username":        username,
 	})
+
+	// needs to return specific user
 }

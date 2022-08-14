@@ -25,10 +25,14 @@ func GenerateJWT(username string) (string, error) {
 	return newToken, nil
 }
 
-func CheckJWT(token string) error {
+func CheckJWT(token string, username *string) error {
 	t, err := jwt.Parse(token, func(tkn *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("JWT_KEY")), nil
 	})
+
+	claims := t.Claims.(jwt.MapClaims)
+
+	*username = claims["user"].(string)
 
 	if err != nil {
 		return err
