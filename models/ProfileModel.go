@@ -7,10 +7,9 @@ import (
 )
 
 type Profile struct {
-	ID       int64  `json:"-";sql:"type:string REFERENCES users(username)"`
-	Username string `json:"username"`
-	// NEEDS
-	// Posts []Post `json:"posts"`
+	ID       int64    `json:"-";sql:"type:string REFERENCES users(username)"`
+	Username string   `json:"username"`
+	Posts    []string `json:"posts"`
 	// Description string `json:"description"`
 	// Name string `json:"name"`
 	// Freinds []User `json:"friends"`
