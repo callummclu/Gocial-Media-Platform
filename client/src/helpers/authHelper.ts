@@ -22,7 +22,7 @@ export function checkAuth(){
     return fetch(`${process.env.REACT_APP_BACKEND_URI}/auth/${token}`,)
         .then(async (res:any) => {
             let res_json = await res.json()
-            return res_json.isAuthenticated
+            return {isAuthenticated:res_json.isAuthenticated,username:res_json.username}
         })
 }
 

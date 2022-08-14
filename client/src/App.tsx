@@ -13,9 +13,12 @@ import Signup from './pages/signup';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
-  
+  const [username,setUsername] = useState("")
+
   const checkLoggedIn = async () => {
-    setLoggedIn(await checkAuth())
+    let isAuth = await checkAuth()
+    setLoggedIn(isAuth.isAuthenticated)
+    setUsername(isAuth.username)
   }
 
   useEffect(()=>{
@@ -24,7 +27,7 @@ function App() {
 
   return(
     <BrowserRouter>
-      <Navbar loggedIn={[loggedIn,setLoggedIn]}/>
+      <Navbar loggedIn={[loggedIn,setLoggedIn]} username={[username,setUsername]}/>
       <Routes>
         <Route path="" element={<Home/>}/>
         <Route path="login" element={<Login loggedIn={[loggedIn,setLoggedIn]}/>}/>

@@ -10,6 +10,7 @@ export const Navbar = (props:any) => {
     const searchQueryRef = useRef<HTMLInputElement>(null)
     const [searchParams,setSearchParams] = useSearchParams()
     const [loggedIn,setLoggedIn] = props.loggedIn 
+    const [username,setUsername] = props.username
 
     const searchUsersSubmit = (e:any) => {
         e.preventDefault()
@@ -22,6 +23,7 @@ export const Navbar = (props:any) => {
 
     const logOutHandler = async () => {
         setLoggedIn(await logOut())
+        setUsername("")
         showNotification({
           title:"Success",
           message:"You've logged out successfully"
@@ -36,11 +38,11 @@ export const Navbar = (props:any) => {
         <>
         <NavbarStyled>
             <Title onClick={()=>window.location.href = window.location.origin}>Gocial Media</Title> 
-            <Group style={{display:"flex","justifyContent":"center",height:"70px"}}>
                 <form onSubmit={searchUsersSubmit}>
                     <TextInput placeholder="search users..." ref={searchQueryRef}/>    
                 </form>
-                   
+            <Group style={{display:"flex","justifyContent":"center",height:"70px"}}>
+            {username}
             {loggedIn ? <Button color="red" onClick={logOutHandler}>Logout</Button> : <Button color="green" onClick={logInHandler}>Login</Button>}
             </Group>
         </NavbarStyled>

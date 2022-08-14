@@ -1,8 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import {checkAuth, logIn, logOut} from '../helpers/authHelper'
-import { LogInUser } from '../Types/auth';
 import { Button, Card, PasswordInput, TextInput, Title, Text} from '@mantine/core'
-import { showNotification } from '@mantine/notifications';
 
 function Signup(props:any) {
   const [loggedIn, setLoggedIn] = props.loggedIn
