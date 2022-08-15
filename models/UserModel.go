@@ -30,9 +30,11 @@ type LogInUser struct {
 }
 
 type ReturnedUser struct {
-	Name     string `json:"name"`
-	Surname  string `json:"surname"`
-	Username string `json:"username"`
+	Name         string `json:"name"`
+	Surname      string `json:"surname"`
+	Username     string `json:"username"`
+	DisplayImage string `json:"display_image"`
+	Description  string `json:"description"`
 }
 
 type ReturnedUsers struct {
@@ -131,7 +133,7 @@ func (u *ReturnedUser) GetUserByUsername(query string) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT username, name, surname FROM users WHERE username = $1", query).Scan(&u.Name, &u.Surname, &u.Username)
+	err = db.QueryRow("SELECT username, name, surname, display_image, description FROM users WHERE username = $1", query).Scan(&u.Name, &u.Surname, &u.Username, &u.DisplayImage, &u.Description)
 
 	return err
 }
