@@ -9,6 +9,7 @@ require github.com/jinzhu/inflection v1.0.0 // indirect
 require (
 	github.com/badoux/checkmail v1.2.1
 	github.com/gin-contrib/sse v0.1.0 // indirect
+	github.com/gin-gonic/contrib v0.0.0-20201101042839-6a891bf89f19
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-playground/validator/v10 v10.10.0 // indirect

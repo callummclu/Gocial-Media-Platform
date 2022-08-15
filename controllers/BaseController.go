@@ -8,6 +8,8 @@ import (
 var Router *gin.Engine = gin.Default()
 
 func BaseController() {
+	// Router.Use(static.Serve("/", static.LocalFile("./client/build", true)))
+
 	UserController()
 	AuthController()
 	ImageController()
