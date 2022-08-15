@@ -2,6 +2,4 @@
 
 *.html linguistic-vendored=false
 
-*.tsx linguistic-language=React
-
-*.sql linguistic-language=SQL
+*.sql linguistic-detectable
