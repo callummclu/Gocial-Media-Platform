@@ -1,23 +1,35 @@
-import { Title, Text, Card } from "@mantine/core"
+import { Title, Text, Card, Button } from "@mantine/core"
 import styled from "styled-components"
 import ReactMarkdown from 'react-markdown'
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
+import {removePost} from '../helpers/postHelper'
 
 
-export const Post = ({title,username,content,created_at}:any) => {
+export const Post = (props:any) => {
+
+    const [updatePosts, setUpdatePosts] = props.updatePosts
 
     dayjs.extend(relativeTime)
 
-    let formattedDate = dayjs(created_at).add(-1,'hour').fromNow()
+    let formattedDate = dayjs(props.created_at).add(-1,'hour').fromNow()
+
+    let token = localStorage.getItem("gocial_auth_token") || ""
+
+    const deletePost = () => {
+        removePost(props.id,token,props.loggedInUser)
+        setUpdatePosts(!updatePosts)
+
+    }
     
     return (
         <Card radius="md" withBorder style={{marginTop:"30px"}}>
         <PostContainer>
-            <div style={{display:"flex",alignItems:"center",gap:"10px"}}><Title order={2}>{title}</Title><Text className="created_at">{formattedDate.toString()}</Text></div>
-            <Text className="username">{username}</Text>
+            <div style={{display:"flex",alignItems:"center",gap:"10px"}}><Title order={2}>{props.title}</Title><Text className="created_at">{formattedDate.toString()}</Text></div>
+            <Text className="username">{props.username}</Text>
+            {props.loggedInUser === props.username && <Button onClick={deletePost} color="red">Delete Post</Button>}
             <Text className="content">
-                <ReactMarkdown>{content}</ReactMarkdown>
+                <ReactMarkdown>{props.content}</ReactMarkdown>
             </Text>
         </PostContainer>
         </Card>

@@ -36,9 +36,13 @@ GET http://localhost:3001/profile/fedcba
 
 ###
 
-POST http://localhost:3001/post/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE2NjA1ODgwOTEsImlzcyI6Imp3dGdvLmlvIiwidXNlciI6ImNhbGx1bW1jbHUifQ.-l7bpTQ1F2WVo7Dfb0Ls1ATAocffbX7N8_fUHgZlHzg
+POST http://localhost:3001/post/.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE2NjA1ODgwOTEsImlzcyI6Imp3dGdvLmlvIiwidXNlciI6ImNhbGx1bW1jbHUifQ.-l7bpTQ1F2WVo7Dfb0Ls1ATAocffbX7N8_fUHgZlHzg
 
 {
     "title":"new post title",
     "content":"### post header \n - item 1 \n - item 2 \n small commentary"
 }
+
+###
+
+GET http://localhost:3001/post/callummclu

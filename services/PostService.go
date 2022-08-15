@@ -39,7 +39,7 @@ func GetPosts(c *gin.Context) {
 
 	offset = (offset - 1) * limit
 
-	rows, err := db.Query("select username,title,content,created_at from posts where strpos(username, $1) > 0 OR strpos(title, $1) > 0 OR strpos(content, $1) > 0 ORDER BY created_at DESC LIMIT $2 OFFSET $3 ", query, limit, offset)
+	rows, err := db.Query("select username,title,content,created_at,Id from posts where strpos(username, $1) > 0 OR strpos(title, $1) > 0 OR strpos(content, $1) > 0 ORDER BY created_at DESC LIMIT $2 OFFSET $3 ", query, limit, offset)
 
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -67,9 +67,10 @@ func GetPosts(c *gin.Context) {
 			Title     string
 			Content   string
 			CreatedAt string
+			ID        int64
 		)
 
-		if err := rows.Scan(&Username, &Title, &Content, &CreatedAt); err != nil {
+		if err := rows.Scan(&Username, &Title, &Content, &CreatedAt, &ID); err != nil {
 			fmt.Print(err)
 		}
 
@@ -78,6 +79,7 @@ func GetPosts(c *gin.Context) {
 			Title:     Title,
 			Content:   Content,
 			CreatedAt: CreatedAt,
+			ID:        ID,
 		})
 	}
 
@@ -134,5 +136,27 @@ func CreateNewPost(c *gin.Context) {
 		"message": "Post made successfully",
 	})
 }
-func DeleteOnePost(c *gin.Context) {}
-func EditOnePost(c *gin.Context)   {}
+
+func DeleteOnePost(c *gin.Context) {
+
+	str_id := c.Param("id")
+
+	token := c.Param("token")
+
+	username := c.Param("username")
+
+	id, err := strconv.ParseInt(str_id, 10, 64)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": "user does not exist"})
+	}
+
+	err = models.DeletePostById(id, token, username)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": "cannot find post"})
+	}
+
+	c.JSON(200, gin.H{"message": "post succesfully deleted"})
+}
+func EditOnePost(c *gin.Context) {}

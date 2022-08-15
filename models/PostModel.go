@@ -9,7 +9,7 @@ import (
 )
 
 type Post struct {
-	ID        int64  `json:"-";sql:"type:string REFERENCES users(username)"`
+	ID        int64  `json:"id";sql:"type:string REFERENCES users(username)"`
 	Title     string `json:"title"`
 	Content   string `json:"content"`
 	Username  string `json:"username"`
@@ -58,7 +58,7 @@ func GetPostsByUsername(query string) (posts []Post, e error) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT username, title, content, created_at FROM posts WHERE username = $1 ORDER BY created_at DESC", query)
+	rows, err := db.Query("SELECT username, title, content, created_at, id FROM posts WHERE username = $1 ORDER BY created_at DESC", query)
 
 	if err != nil {
 		return nil, err
@@ -74,9 +74,10 @@ func GetPostsByUsername(query string) (posts []Post, e error) {
 			Title     string
 			Content   string
 			CreatedAt string
+			Id        int64
 		)
 
-		if err := rows.Scan(&Username, &Title, &Content, &CreatedAt); err != nil {
+		if err := rows.Scan(&Username, &Title, &Content, &CreatedAt, &Id); err != nil {
 			fmt.Print(err)
 		}
 
@@ -85,8 +86,30 @@ func GetPostsByUsername(query string) (posts []Post, e error) {
 			Title:     Title,
 			Content:   Content,
 			CreatedAt: CreatedAt,
+			ID:        Id,
 		})
 	}
 
 	return p, err
+}
+
+func DeletePostById(id int64, token string, username string) error {
+
+	err := auth.CheckJWT(token, &username)
+
+	if err != nil {
+		err = errors.New("invalid user")
+		return err
+	}
+
+	db, err := configs.GetDB()
+	if err != nil {
+		err = errors.New("DB connection error")
+		return err
+	}
+	defer db.Close()
+
+	_, err = db.Query("DELETE FROM posts WHERE id = $1", id)
+
+	return err
 }

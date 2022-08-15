@@ -9,6 +9,7 @@ function Home(props:any){
     const [posts,setPosts] = useState<any>()
     const [updatePosts, setUpdatePosts] = props.updatePosts
     const [page, setPage] = useState<number>(1)
+    const [username,setUsername] = props.username
 
     useEffect(()=>{
         let searchParameters = searchParams.get("searchParams")
@@ -27,7 +28,7 @@ function Home(props:any){
         <Container>
             <Container>
                 <PostContainer>
-                    {(posts?.data) ? (posts.data).map((e:any)=><Post {...e}/>) :<Text m="xl">nothing to show.</Text>}
+                    {(posts?.data) ? (posts.data).map((e:any)=><Post {...e} updatePosts={[updatePosts, setUpdatePosts]} loggedInUser={username} />) :<Text m="xl">nothing to show.</Text>}
                 </PostContainer>
             </Container>
         </Container>

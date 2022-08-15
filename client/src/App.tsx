@@ -33,7 +33,7 @@ function App() {
       <Navbar loggedIn={[loggedIn,setLoggedIn]} username={[username,setUsername]}/>
       {loggedIn && <NewPost updatePosts={[updatePosts, setUpdatePosts]}/>}
       <Routes>
-        <Route path="" element={<Home updatePosts={[updatePosts, setUpdatePosts]}/>}/>
+        <Route path="" element={<Home updatePosts={[updatePosts, setUpdatePosts]} username={[username,setUsername]}/>}/>
         <Route path="login" element={<Login loggedIn={[loggedIn,setLoggedIn]}/>}/>
         <Route path="signup" element={<Signup loggedIn={[loggedIn,setLoggedIn]}/>}/>
         <Route path="results" element={<SearchResults/>}/>
