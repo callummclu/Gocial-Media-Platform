@@ -22,7 +22,7 @@ function UserProfile(props:any){
                 let res_json = await res.json()
                 setPosts(res_json)
             })
-    },[])
+    },[updatePosts])
 
 
     return (
