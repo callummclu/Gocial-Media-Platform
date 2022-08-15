@@ -12,9 +12,9 @@ func PostController() {
 
 		api.GET("", services.GetPosts)
 		api.GET(":username", services.GetPostByUsername)
-		api.POST("", services.CreateNewPost)
-		api.DELETE(":id", services.DeleteOnePost)
-		api.PUT(":id", services.EditOnePost)
+		api.POST(":token", services.CreateNewPost)
+		api.DELETE(":id/:token", services.DeleteOnePost)
+		api.PUT(":id/:token", services.EditOnePost)
 
 	}
 

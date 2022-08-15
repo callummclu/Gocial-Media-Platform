@@ -11,6 +11,7 @@ func BaseController() {
 	// Router.Use(static.Serve("/", static.LocalFile("./client/build", true)))
 
 	UserController()
+	PostController()
 	AuthController()
 	ImageController()
 	Router.Run(configs.EnvPORT())
