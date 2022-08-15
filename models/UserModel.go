@@ -78,14 +78,6 @@ func (u *User) SaveUser() error {
 			defer insert_stmt.Close()
 			_, err = insert_stmt.Exec(u.Name, u.Surname, u.Username, u.Email, hashedPassword)
 
-			profile := NewProfile()
-
-			err = profile.SaveProfile(u.Username)
-
-			if err != nil {
-				return err
-			}
-
 			return err
 		} else {
 			return err

@@ -10,3 +10,5 @@ func SaveNewImage(c *gin.Context) {
 	// SAVE URL TO CDN ALONGSIDE UUID TO IMAGE MODEL
 	// RETURN THIS MODEL TO BE USED ELSEWHERE
 }
+
+func DeleteOneImage(c *gin.Context) {}

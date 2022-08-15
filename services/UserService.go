@@ -205,3 +205,13 @@ func DeleteOneUser(c *gin.Context) {
 	return
 }
 func EditOneUser(c *gin.Context) {}
+
+// May go into invitationsService.go
+func GetAllSentInvitations(c *gin.Context)     {}
+func GetAllReceivedInvitations(c *gin.Context) {}
+func SendInvitation(c *gin.Context)            {}
+func DeleteInvitation(c *gin.Context)          {}
+
+// May go into friendService.go
+func GetUsersFriends(c *gin.Context) {}
+func DeleteFriend(c *gin.Context)    {}

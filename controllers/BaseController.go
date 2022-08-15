@@ -9,7 +9,6 @@ var Router *gin.Engine = gin.Default()
 
 func BaseController() {
 	UserController()
-	ProfileController()
 	AuthController()
 	ImageController()
 	Router.Run(configs.EnvPORT())
