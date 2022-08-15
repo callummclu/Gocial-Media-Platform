@@ -1,0 +1,3 @@
+*.tsx linguistic-language=React
+
+*.sql linguistic-language=SQL
