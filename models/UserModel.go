@@ -9,15 +9,19 @@ import (
 )
 
 type User struct {
-	ID              int64  `json:"-"`
-	Name            string `json:"name"`
-	Surname         string `json:"surname"`
-	Username        string `json:"username"`
-	Email           string `json:"email"`
-	EmailVerifiedAt string `json:"email_verified_at,omitempty"`
-	Password        string `json:"password,omitempty"`
-	CreatedAt       string `json:"created_at,omitempty"`
-	UpdatedAt       string `json:"updated_at,omitempty"`
+	ID                  int64    `json:"-"`
+	Name                string   `json:"name"`
+	Surname             string   `json:"surname"`
+	Username            string   `json:"username"`
+	Email               string   `json:"email"`
+	Description         string   `json:"description"`
+	DisplayImage        string   `json:"display_image"`
+	Friends             []string `json:"friends"`
+	ReceivedInvitations []string `json:"received_invitations"`
+	SentInvitations     []string `json:"sent_invitations"`
+	EmailVerifiedAt     string   `json:"email_verified_at,omitempty"`
+	Password            string   `json:"password,omitempty"`
+	CreatedAt           string   `json:"created_at,omitempty"`
 }
 
 type LogInUser struct {

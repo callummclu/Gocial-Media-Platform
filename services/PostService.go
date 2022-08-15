@@ -39,7 +39,7 @@ func GetPosts(c *gin.Context) {
 
 	offset = (offset - 1) * limit
 
-	rows, err := db.Query("select username,title,content from posts where strpos(username, $1) > 0 OR strpos(title, $1) > 0 OR strpos(content, $1) > 0 LIMIT $2 OFFSET $3", query, limit, offset)
+	rows, err := db.Query("select username,title,content,created_at from posts where strpos(username, $1) > 0 OR strpos(title, $1) > 0 OR strpos(content, $1) > 0 ORDER BY created_at DESC LIMIT $2 OFFSET $3 ", query, limit, offset)
 
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -63,19 +63,21 @@ func GetPosts(c *gin.Context) {
 
 	for rows.Next() {
 		var (
-			Username string
-			Title    string
-			Content  string
+			Username  string
+			Title     string
+			Content   string
+			CreatedAt string
 		)
 
-		if err := rows.Scan(&Username, &Title, &Content); err != nil {
+		if err := rows.Scan(&Username, &Title, &Content, &CreatedAt); err != nil {
 			fmt.Print(err)
 		}
 
 		posts = append(posts, models.Post{
-			Username: Username,
-			Title:    Title,
-			Content:  Content,
+			Username:  Username,
+			Title:     Title,
+			Content:   Content,
+			CreatedAt: CreatedAt,
 		})
 	}
 

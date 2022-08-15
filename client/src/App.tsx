@@ -10,10 +10,13 @@ import Login from './pages/login';
 import SearchResults from './pages/SearchResults';
 import UserProfile from './pages/UserProfile';
 import Signup from './pages/signup';
+import { NewPost } from './components/newPost';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
   const [username,setUsername] = useState("")
+
+  const [updatePosts, setUpdatePosts] = useState(false)
 
   const checkLoggedIn = async () => {
     let isAuth = await checkAuth()
@@ -28,8 +31,9 @@ function App() {
   return(
     <BrowserRouter>
       <Navbar loggedIn={[loggedIn,setLoggedIn]} username={[username,setUsername]}/>
+      {loggedIn && <NewPost updatePosts={[updatePosts, setUpdatePosts]}/>}
       <Routes>
-        <Route path="" element={<Home/>}/>
+        <Route path="" element={<Home updatePosts={[updatePosts, setUpdatePosts]}/>}/>
         <Route path="login" element={<Login loggedIn={[loggedIn,setLoggedIn]}/>}/>
         <Route path="signup" element={<Signup loggedIn={[loggedIn,setLoggedIn]}/>}/>
         <Route path="results" element={<SearchResults/>}/>

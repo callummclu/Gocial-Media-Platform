@@ -34,6 +34,8 @@ export const Navbar = (props:any) => {
         window.location.href = window.location.origin + '/login'
       }
 
+      let userRedirect = `/users/${username}`
+
     return (
         <>
         <NavbarStyled>
@@ -42,7 +44,7 @@ export const Navbar = (props:any) => {
                     <TextInput placeholder="search users..." ref={searchQueryRef}/>    
                 </form>
             <Group style={{display:"flex","justifyContent":"center",height:"70px"}}>
-            <Text>{username}</Text>
+            <Text><a href={userRedirect}>{username}</a></Text>
             {loggedIn ? <Button color="red" onClick={logOutHandler}>Logout</Button> : <Button color="green" onClick={logInHandler}>Login</Button>}
             </Group>
         </NavbarStyled>

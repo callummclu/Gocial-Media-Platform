@@ -9,10 +9,11 @@ import (
 )
 
 type Post struct {
-	ID       int64  `json:"-";sql:"type:string REFERENCES users(username)"`
-	Title    string `json:"title"`
-	Content  string `json:"content"`
-	Username string `json:"username"`
+	ID        int64  `json:"-";sql:"type:string REFERENCES users(username)"`
+	Title     string `json:"title"`
+	Content   string `json:"content"`
+	Username  string `json:"username"`
+	CreatedAt string `json:"created_at,omitempty"`
 }
 
 func NewPost() *Post {
@@ -26,7 +27,8 @@ func (u *Post) SavePost(token string) error {
 	err := auth.CheckJWT(token, &username)
 
 	if err != nil {
-		return errors.New("invalid user")
+		err = errors.New("invalid user")
+		return err
 	}
 
 	db, err := configs.GetDB()
@@ -56,7 +58,7 @@ func GetPostsByUsername(query string) (posts []Post, e error) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT username, title, content FROM posts WHERE username = $1", query)
+	rows, err := db.Query("SELECT username, title, content, created_at FROM posts WHERE username = $1 ORDER BY created_at DESC", query)
 
 	if err != nil {
 		return nil, err
@@ -68,19 +70,21 @@ func GetPostsByUsername(query string) (posts []Post, e error) {
 
 	for rows.Next() {
 		var (
-			Username string
-			Title    string
-			Content  string
+			Username  string
+			Title     string
+			Content   string
+			CreatedAt string
 		)
 
-		if err := rows.Scan(&Username, &Title, &Content); err != nil {
+		if err := rows.Scan(&Username, &Title, &Content, &CreatedAt); err != nil {
 			fmt.Print(err)
 		}
 
 		p = append(p, Post{
-			Username: Username,
-			Title:    Title,
-			Content:  Content,
+			Username:  Username,
+			Title:     Title,
+			Content:   Content,
+			CreatedAt: CreatedAt,
 		})
 	}
 
