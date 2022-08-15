@@ -7,5 +7,6 @@ func ImageController() {
 	{
 		api.GET(":uuid", services.GetImageByUUID)
 		api.POST("", services.SaveNewImage)
+		api.DELETE(":uuid", services.DeleteOneImage)
 	}
 }
