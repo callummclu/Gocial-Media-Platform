@@ -1,3 +1,7 @@
+* linguistic-vendored
+
+*.html linguistic-vendored=false
+
 *.tsx linguistic-language=React
 
 *.sql linguistic-language=SQL
