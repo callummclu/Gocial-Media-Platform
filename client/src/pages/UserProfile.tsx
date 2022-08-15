@@ -4,9 +4,11 @@ import { useParams, useSearchParams } from "react-router-dom"
 import { Post } from "../components/post"
 import { PostContainer } from "./Home"
 
-function UserProfile(){
+function UserProfile(props:any){
 
     const {username} = useParams()
+
+    const [updatePosts, setUpdatePosts] = props.updatePosts
 
     const [posts,setPosts] = useState<any>()
     const [friends,setFriends] = useState<any>()
@@ -31,7 +33,7 @@ function UserProfile(){
                     <Group mb={"xl"}><Avatar size={128} radius={100} /><div><Title ml="md">{username}</Title><Text ml="md">{"Test Description"}</Text></div></Group>
                     <Divider/>
                     <PostContainer>
-                    {(posts?.data) ? (posts.data.reverse()).map((e:any)=><Post {...e}/>) :<Text m="xl">nothing to show.</Text>}
+                    {(posts?.data) ? (posts.data).map((e:any)=><Post {...e} updatePosts={[updatePosts, setUpdatePosts]} loggedInUser={username} />) :<Text m="xl">nothing to show.</Text>}
                     </PostContainer>
                 </Card>
                 <Card style={{width:"30%",height:"calc(100vh - 110px)", position:"sticky",top:"50px"}} withBorder >

@@ -14,9 +14,10 @@ export const Post = (props:any) => {
 
     let formattedDate = dayjs(props.created_at).add(-1,'hour').fromNow()
 
-    let token = localStorage.getItem("gocial_auth_token") || ""
 
     const deletePost = () => {
+        let token = localStorage.getItem("gocial_auth_token") || ""
+
         removePost(props.id,token,props.loggedInUser)
         setUpdatePosts(!updatePosts)
 
@@ -25,9 +26,13 @@ export const Post = (props:any) => {
     return (
         <Card radius="md" withBorder style={{marginTop:"30px"}}>
         <PostContainer>
-            <div style={{display:"flex",alignItems:"center",gap:"10px"}}><Title order={2}>{props.title}</Title><Text className="created_at">{formattedDate.toString()}</Text></div>
-            <Text className="username">{props.username}</Text>
+            <div style={{display:"flex",alignItems:"center"}}>
+            <div style={{width:"calc(100% - 100px)"}}>
+                <div style={{display:"flex",alignItems:"center",gap:"10px"}}><Title order={2}>{props.title}</Title><Text className="created_at">{formattedDate.toString()}</Text></div>
+                <Text className="username">{props.username}</Text>
+            </div>
             {props.loggedInUser === props.username && <Button onClick={deletePost} color="red">Delete Post</Button>}
+            </div>
             <Text className="content">
                 <ReactMarkdown>{props.content}</ReactMarkdown>
             </Text>
@@ -41,6 +46,7 @@ const PostContainer = styled.div`
     & *{
         margin:0
     }
+
 
     & .username{
 

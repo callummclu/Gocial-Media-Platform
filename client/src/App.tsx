@@ -37,7 +37,7 @@ function App() {
         <Route path="login" element={<Login loggedIn={[loggedIn,setLoggedIn]}/>}/>
         <Route path="signup" element={<Signup loggedIn={[loggedIn,setLoggedIn]}/>}/>
         <Route path="results" element={<SearchResults/>}/>
-        <Route path="users/:username" element={<UserProfile/>}/>
+        <Route path="users/:username" element={<UserProfile updatePosts={[updatePosts, setUpdatePosts]}/>}/>
       </Routes>
     </BrowserRouter>
   )
