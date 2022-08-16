@@ -25,11 +25,6 @@ function UserProfile(props:any){
                 let res_json = await res.json()
                 setPosts(res_json)
             })
-            fetch(`${process.env.REACT_APP_BACKEND_URI}/user/${loggedInUserData?.name}`)
-            .then(async (res:any) => {
-                let res_json = await res.json()
-                setLoggedInUserData(res_json.data)
-            })
     },[updatePosts])
 
 
@@ -40,6 +35,7 @@ function UserProfile(props:any){
                 setUserData(res_json.data)
             })
     },[])
+
     const redirectToUser = (username:string) => {
         window.location.href = window.location.origin + "/users/" + username 
     }
@@ -90,7 +86,6 @@ function UserProfile(props:any){
                     message:"Cannot add user",
                     color:"red"
                   })
-                  
             } else {
                 showNotification({
                     title:"Success",
@@ -99,6 +94,7 @@ function UserProfile(props:any){
                   })
             }
         })
+        setUpdatePosts(!updatePosts)
     }
 
     return (
@@ -114,8 +110,19 @@ function UserProfile(props:any){
                 </Card>
                 <Card style={{width:"30%",height:"calc(100vh - 110px)", position:"sticky",top:"50px"}} withBorder >
                     <Title m="xl" order={2}>Friends</Title>
+                    {checkUserIsSelf() ?
+                    <FriendsContainer>{loggedInUserData?.friends ? loggedInUserData.friends.map((e:any)=><Card onClick={()=>redirectToUser(e)} className="user" p="lg" radius="md" key={e}><Group><Avatar radius="xl" /><Title order={3}>{e}</Title></Group></Card>) : <Card ml="md"><Text>no friends :(</Text></Card>}</FriendsContainer>
+                    :
                     <FriendsContainer>{userData?.friends ? userData.friends.map((e:any)=><Card onClick={()=>redirectToUser(e)} className="user" p="lg" radius="md" key={e}><Group><Avatar radius="xl" /><Title order={3}>{e}</Title></Group></Card>) : <Card ml="md"><Text>no friends :(</Text></Card>}</FriendsContainer>
-                    {(checkUserIsSelf() && (userData?.received_invitations && userData?.received_invitations.length > 0)) &&<><Divider m="md"/><Title m="xl" order={2}>Requests</Title><FriendsContainer>{userData?.received_invitations ? userData?.received_invitations.map((e:any)=><Card className="user" p="lg" radius="md" key={e}><Group><Avatar radius="xl" /><Title onClick={()=>redirectToUser(e)} order={3}>{e}</Title><Button onClick={()=>acceptRequest(e)}>Accept</Button></Group></Card>) : <Card ml="md"><Text>no friends :(</Text></Card>}</FriendsContainer></>}
+                    }
+                    {(checkUserIsSelf() 
+                        && (loggedInUserData?.received_invitations && loggedInUserData?.received_invitations.length > 0)) 
+                        &&<>
+                        <Divider m="md"/>
+                        <Title m="xl" order={2}>Requests</Title>
+                        <FriendsContainer>
+                            {loggedInUserData?.received_invitations.map((e:any)=><Card className="user" p="lg" radius="md" key={e}><Group><Avatar radius="xl" /><Title onClick={()=>redirectToUser(e)} order={3}>{e}</Title><Button onClick={()=>acceptRequest(e)}>Accept</Button></Group></Card>)}
+                        </FriendsContainer></>}
                 </Card>
 
             </div>

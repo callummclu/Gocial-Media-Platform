@@ -24,12 +24,11 @@ function App() {
     setLoggedIn(isAuth.isAuthenticated)
     setUsername(isAuth.username)
     fetch(`${process.env.REACT_APP_BACKEND_URI}/user/${isAuth.username}`)
-            .then(async (res:any) => {
-                let res_json = await res.json()
-                setLoggedInUserData(res_json.data)
-            })
+      .then(async (res:any) => {
+          let res_json = await res.json()
+          setLoggedInUserData(res_json.data)
+      })
   }
-
   useEffect(()=>{
     checkLoggedIn()
   },[updatePosts])
