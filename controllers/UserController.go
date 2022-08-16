@@ -14,9 +14,8 @@ func UserController() {
 		api.GET(":username", services.GetUserByUsername)
 		api.POST("", services.CreateNewUser)
 		api.DELETE(":token", services.DeleteOneUser)
-
 		// NEEDS AUTH MIDDLEWARE
-		api.PUT(":id/:token", services.EditOneUser)
+		// api.PUT(":id/:token", services.EditOneUser)
 
 		api.GET("invitation/:username/sent", services.GetAllSentInvitations)
 		api.GET("invitation/:username/received", services.GetAllReceivedInvitations)

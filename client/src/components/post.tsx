@@ -22,6 +22,10 @@ export const Post = (props:any) => {
         setUpdatePosts(!updatePosts)
 
     }
+
+    const redirectToUser = (username:string) => {
+        window.location.href = window.location.origin + "/users/" + username 
+    }
     
     return (
         <Card radius="md" withBorder style={{marginTop:"30px"}}>
@@ -29,7 +33,7 @@ export const Post = (props:any) => {
             <div style={{display:"flex",alignItems:"center"}}>
             <div style={{width:"calc(100% - 100px)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:"10px"}}><Title order={2}>{props.title}</Title><Text className="created_at">{formattedDate.toString()}</Text></div>
-                <Text className="username">{props.username}</Text>
+                <Text className="username" onClick={()=>redirectToUser(props.username)}>{props.username}</Text>
             </div>
             {props.loggedInUser === props.username && <Button onClick={deletePost} color="red">Delete Post</Button>}
             </div>

@@ -58,7 +58,7 @@ func SendInvitation(c *gin.Context) {
 	err := models.SendUserInvitation(username, sentUsername, token)
 
 	if err != nil {
-		c.JSON(400, gin.H{"error": err})
+		c.JSON(401, gin.H{"error": err})
 		return
 	}
 

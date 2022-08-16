@@ -49,8 +49,8 @@ GET http://localhost:3001/user/friends/321
 
 ###
 
-POST http://localhost:3001/user/invitation/123/callummclu/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE2NjA2NjM0MTksImlzcyI6Imp3dGdvLmlvIiwidXNlciI6IjEyMyJ9.-yLTzRq-v7SIT0n1-qGJMvng5lOJklNbdrX41UXGYTE
+POST http://localhost:3001/user/invitation/test/callummclu/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE2NjA2NjM0NjYsImlzcyI6Imp3dGdvLmlvIiwidXNlciI6InRlc3QifQ.HVQUOwEXv3bkQQhdHIGUFwV39BucjkWpNjTYDVw-cFA
 
 ###
 
-GET http://localhost:3001/user/invitation/123
+GET http://localhost:3001/user/invitation/test

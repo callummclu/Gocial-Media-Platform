@@ -33,12 +33,13 @@ type LogInUser struct {
 }
 
 type ReturnedUser struct {
-	Name         string   `json:"name"`
-	Surname      string   `json:"surname"`
-	Username     string   `json:"username"`
-	DisplayImage string   `json:"display_image"`
-	Description  string   `json:"description"`
-	Friends      []string `json:"friends"`
+	Name                string   `json:"name"`
+	Surname             string   `json:"surname"`
+	Username            string   `json:"username"`
+	DisplayImage        string   `json:"display_image"`
+	Description         string   `json:"description"`
+	Friends             []string `json:"friends"`
+	ReceivedInvitations []string `json:"received_invitations"`
 }
 
 type ReturnedUsers struct {
@@ -80,7 +81,7 @@ func (u *User) SaveUser() error {
 				return err
 			}
 			//Add the new user
-			insert_stmt, err := db.Prepare("INSERT INTO users (name,surname,username,email,password,display_image,description,friends) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)")
+			insert_stmt, err := db.Prepare("INSERT INTO users (name,surname,username,email,password,display_image,description,friends,received_invitations) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$8)")
 
 			if err != nil {
 				return err
@@ -138,7 +139,7 @@ func (u *ReturnedUser) GetUserByUsernameQuery(query string) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT username, name, surname, display_image, description, friends FROM users WHERE username = $1", query).Scan(&u.Name, &u.Surname, &u.Username, &u.DisplayImage, &u.Description, pq.Array(&u.Friends))
+	err = db.QueryRow("SELECT username, name, surname, display_image, description, friends, received_invitations FROM users WHERE username = $1", query).Scan(&u.Name, &u.Surname, &u.Username, &u.DisplayImage, &u.Description, pq.Array(&u.Friends), pq.Array(&u.ReceivedInvitations))
 
 	return err
 }
