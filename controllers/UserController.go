@@ -20,19 +20,15 @@ func UserController() {
 		// NEEDS AUTH MIDDLEWARE
 		api.PUT(":id", services.EditOneUser)
 
-		api := Router.Group("invitation")
-		{
-			api.GET(":username/sent", services.GetAllSentInvitations)
-			api.GET(":username/received", services.GetAllReceivedInvitations)
-			api.POST(":username", services.SendInvitation)
-			api.DELETE(":username/:sentUsername", services.DeleteInvitation)
-		}
+		api.GET("invitation/:username/sent", services.GetAllSentInvitations)
+		api.GET("invitation/:username/received", services.GetAllReceivedInvitations)
+		api.GET("invitation/:username", services.GetAllInvitations)
 
-		api = Router.Group("friends")
-		{
-			api.GET(":username", services.GetUsersFriends)
-			api.DELETE(":username/:friendUsername", services.DeleteFriend)
-		}
+		api.POST("invitation/:username/:sentUsername", services.SendInvitation)
+		api.DELETE("invitation/:username/:sentUsername", services.DeleteInvitation)
+
+		api.GET("friends/:username", services.GetUsersFriends)
+		api.DELETE("friends/:username/:friendUsername", services.DeleteFriend)
 
 	}
 }

@@ -6,6 +6,7 @@ import (
 
 	"github.com/callummclu/Gocial-Media-Platform/auth"
 	"github.com/callummclu/Gocial-Media-Platform/configs"
+	"github.com/lib/pq"
 )
 
 type User struct {
@@ -136,4 +137,61 @@ func (u *ReturnedUser) GetUserByUsername(query string) error {
 	err = db.QueryRow("SELECT username, name, surname, display_image, description FROM users WHERE username = $1", query).Scan(&u.Name, &u.Surname, &u.Username, &u.DisplayImage, &u.Description)
 
 	return err
+}
+
+func GetRecievedInvitationsByUsername(username string) (r_inv []string, e error) {
+	db, err := configs.GetDB()
+	if err != nil {
+		err = errors.New("DB connection error")
+		return nil, err
+	}
+	defer db.Close()
+
+	var received_invitations []string
+
+	stmt := "SELECT received_invitations FROM users WHERE username=$1"
+
+	if err := db.QueryRow(stmt, username).Scan(pq.Array(&received_invitations)); err != nil {
+		return nil, err
+	}
+
+	return received_invitations, err
+}
+
+func GetAllSentInvitations(username string) (r_inv []string, e error) {
+	db, err := configs.GetDB()
+	if err != nil {
+		err = errors.New("DB connection error")
+		return nil, err
+	}
+	defer db.Close()
+
+	var sent_invitations []string
+
+	stmt := "SELECT sent_invitations FROM users WHERE username=$1"
+
+	if err := db.QueryRow(stmt, username).Scan(pq.Array(&sent_invitations)); err != nil {
+		return nil, err
+	}
+
+	return sent_invitations, err
+}
+
+func GetAllFriends(username string) (f_list []string, e error) {
+	db, err := configs.GetDB()
+	if err != nil {
+		err = errors.New("DB connection error")
+		return nil, err
+	}
+	defer db.Close()
+
+	var friends []string
+
+	stmt := "SELECT friends FROM users WHERE username=$1"
+
+	if err := db.QueryRow(stmt, username).Scan(pq.Array(&friends)); err != nil {
+		return nil, err
+	}
+
+	return friends, err
 }

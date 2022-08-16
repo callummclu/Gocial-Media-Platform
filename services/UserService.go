@@ -211,11 +211,66 @@ func DeleteOneUser(c *gin.Context) {
 func EditOneUser(c *gin.Context) {}
 
 // May go into invitationsService.go
-func GetAllSentInvitations(c *gin.Context)     {}
-func GetAllReceivedInvitations(c *gin.Context) {}
-func SendInvitation(c *gin.Context)            {}
-func DeleteInvitation(c *gin.Context)          {}
+func GetAllSentInvitations(c *gin.Context) {
+
+	var username string = c.Param("username")
+	received_invitations, err := models.GetAllSentInvitations(username)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+		return
+	}
+
+	c.JSON(200, gin.H{"data": received_invitations})
+}
+
+func GetAllReceivedInvitations(c *gin.Context) {
+	var username string = c.Param("username")
+	sent_invitations, err := models.GetRecievedInvitationsByUsername(username)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+		return
+	}
+
+	c.JSON(200, gin.H{"data": sent_invitations})
+}
+
+func GetAllInvitations(c *gin.Context) {
+	var username string = c.Param("username")
+	sent_invitations, err := models.GetRecievedInvitationsByUsername(username)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+		return
+	}
+
+	received_invitations, err := models.GetAllSentInvitations(username)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+		return
+	}
+
+	c.JSON(200, gin.H{"sent": sent_invitations, "received": received_invitations})
+}
+
+func SendInvitation(c *gin.Context) {
+
+}
+func DeleteInvitation(c *gin.Context) {}
 
 // May go into friendService.go
-func GetUsersFriends(c *gin.Context) {}
-func DeleteFriend(c *gin.Context)    {}
+func GetUsersFriends(c *gin.Context) {
+	var username string = c.Param("username")
+	friends, err := models.GetAllFriends(username)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+		return
+	}
+
+	c.JSON(200, gin.H{"friends": friends})
+
+}
+func DeleteFriend(c *gin.Context) {}

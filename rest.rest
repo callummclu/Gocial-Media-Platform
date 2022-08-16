@@ -45,4 +45,8 @@ POST http://localhost:3001/post/.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE
 
 ###
 
-GET http://localhost:3001/post/callummclu
+GET http://localhost:3001/post/callummclu/4/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE2NjA1OTg5NTgsImlzcyI6Imp3dGdvLmlvIiwidXNlciI6ImNhbGx1bW1jbHUifQ.8mqYW4lgJA6lUbeTu7zw0I0_IwHtJ4QM14X0-BADayI"
+
+###
+
+GET http://localhost:3001/user/friends/callummclu
