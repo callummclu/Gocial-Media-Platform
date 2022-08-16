@@ -49,4 +49,4 @@ GET http://localhost:3001/post/callummclu/4/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 
 ###
 
-GET http://localhost:3001/user/friends/callummclu
+GET http://localhost:3001/user/invitation/callummclu/testUser

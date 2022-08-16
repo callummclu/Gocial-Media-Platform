@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 
 	"github.com/callummclu/Gocial-Media-Platform/auth"
 	"github.com/callummclu/Gocial-Media-Platform/configs"
@@ -194,4 +195,62 @@ func GetAllFriends(username string) (f_list []string, e error) {
 	}
 
 	return friends, err
+}
+
+func SendUserInvitation(username string, sentUsername string) error {
+	db, err := configs.GetDB()
+	if err != nil {
+		fmt.Print("DB ERRRO")
+		err = errors.New("DB connection error")
+		return err
+	}
+	defer db.Close()
+
+	var username_sent_requests []string
+	var sentUsername_received_requests []string
+
+	username_stmt := "SELECT sent_invitations from users WHERE username=$1"
+	sentUsername_stmt := "SELECT received_invitations from users WHERE username=$1"
+
+	if err := db.QueryRow(username_stmt, username).Scan(pq.Array(&username_sent_requests)); err != nil {
+		fmt.Print("username requests")
+		return errors.New("Failed to get username requests")
+
+	}
+
+	// Check to see if sentUsername is in username_sent_request
+	// Return already sent
+
+	/*
+		NEED A CHECK TO SEE IF sentUsername is already in recieved_requests for username to ensure this data is not doubled up
+	*/
+
+	if err := db.QueryRow(sentUsername_stmt, sentUsername).Scan(pq.Array(&sentUsername_received_requests)); err != nil {
+		fmt.Print("sentUsername requests")
+		return errors.New("Failed to get sentUsername requests")
+	}
+
+	username_sent_requests = append(username_sent_requests, sentUsername)
+	sentUsername_received_requests = append(sentUsername_received_requests, username)
+
+	save_username_stmt := "UPDATE users SET sent_invitations = $1 WHERE username = $2"
+	save_SentUsername_stmt := "UPDATE users SET received_invitations = $1 WHERE username = $2"
+
+	_, err = db.Exec(save_username_stmt, pq.Array(username_sent_requests), username)
+
+	if err != nil {
+		fmt.Print("username")
+		panic(err)
+		return err
+	}
+
+	_, err = db.Exec(save_SentUsername_stmt, pq.Array(sentUsername_received_requests), sentUsername)
+
+	if err != nil {
+		fmt.Print("sentUsername")
+		panic(err)
+		return err
+	}
+
+	return err
 }

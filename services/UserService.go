@@ -160,6 +160,7 @@ func CreateNewUser(c *gin.Context) {
 		"message": "User registered successfully",
 	})
 }
+
 func DeleteOneUser(c *gin.Context) {
 	var user models.LogInUser
 	c.BindJSON(&user)
@@ -260,14 +261,20 @@ func SendInvitation(c *gin.Context) {
 
 	// Check token is valid
 
-	// GET SENT reuquests from username
-	// GET Received requests from sentUsername
+	// Check sentUsername is not already in username.friends
 
-	// sent_requests = append(sent_requests, sentUsername)
-	// received_requests = append(received_requests, username)
+	username := c.Param("username")
+	sentUsername := c.Param("sentUsername")
 
-	// UPDATE users SET sent_requests = sent_requests WHERE username=username
-	// UPDATE users SET received_requests = received_requests WHERE username=sentUsername
+	err := models.SendUserInvitation(username, sentUsername)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "request sent successfully"})
+
 }
 
 func AcceptFriendRequest(c *gin.Context) {
