@@ -24,6 +24,8 @@ func UserController() {
 		api.GET("invitation/:username/received", services.GetAllReceivedInvitations)
 		api.GET("invitation/:username", services.GetAllInvitations)
 
+		api.POST("invitation/:username/:sentUsername", services.DeleteInvitation)
+
 		api.POST("invitation/:username/:sentUsername", services.SendInvitation)
 		api.DELETE("invitation/:username/:sentUsername", services.DeleteInvitation)
 

@@ -208,6 +208,7 @@ func DeleteOneUser(c *gin.Context) {
 	c.JSON(400, gin.H{"error": err})
 	return
 }
+
 func EditOneUser(c *gin.Context) {}
 
 // May go into invitationsService.go
@@ -257,10 +258,56 @@ func GetAllInvitations(c *gin.Context) {
 
 func SendInvitation(c *gin.Context) {
 
-}
-func DeleteInvitation(c *gin.Context) {}
+	// Check token is valid
 
-// May go into friendService.go
+	// GET SENT reuquests from username
+	// GET Received requests from sentUsername
+
+	// sent_requests = append(sent_requests, sentUsername)
+	// received_requests = append(received_requests, username)
+
+	// UPDATE users SET sent_requests = sent_requests WHERE username=username
+	// UPDATE users SET received_requests = received_requests WHERE username=sentUsername
+}
+
+func AcceptFriendRequest(c *gin.Context) {
+
+	// Check token is valid
+
+	// GET SENT reuquests from username
+	// GET Received requests from sentUsername
+
+	// sent_requests = remove sentUsername
+	// received_requests = remove username
+
+	// UPDATE users SET sent_requests = sent_requests WHERE username=username
+	// UPDATE users SET received_requests = received_requests WHERE username=sentUsername
+
+	// GET friends from username
+	// GET friends from sentUsername
+
+	// friends_username = append(friends_username, sentUsername)
+	// friends_sentUsername = append(friends_sentUsername, username)
+
+	// UPDATE users SET friends = friends_username WHERE username=username
+	// UPDATE users SET friends = friends_sentUsername WHERE username=sentUsername
+
+}
+
+func DeleteInvitation(c *gin.Context) {
+
+	// Check token is valid
+
+	// GET SENT reuquests from username
+	// GET Received requests from sentUsername
+
+	// sent_requests = remove sentUsername
+	// received_requests = remove username
+
+	// UPDATE users SET sent_requests = sent_requests WHERE username=username
+	// UPDATE users SET received_requests = received_requests WHERE username=sentUsername
+}
+
 func GetUsersFriends(c *gin.Context) {
 	var username string = c.Param("username")
 	friends, err := models.GetAllFriends(username)
@@ -273,4 +320,16 @@ func GetUsersFriends(c *gin.Context) {
 	c.JSON(200, gin.H{"friends": friends})
 
 }
-func DeleteFriend(c *gin.Context) {}
+
+func DeleteFriend(c *gin.Context) {
+	// Check token is valid
+
+	// GET friends from username
+	// GET friends from sentUsername
+
+	// friends_username = remove sentUsername
+	// friends_sentUsername = remove username
+
+	// UPDATE users SET friends = friends_username WHERE username=username
+	// UPDATE users SET friends = friends_sentUsername WHERE username=sentUsername
+}
