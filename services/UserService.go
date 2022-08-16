@@ -259,8 +259,6 @@ func GetAllInvitations(c *gin.Context) {
 
 func SendInvitation(c *gin.Context) {
 
-	// Check sentUsername is not already in username.friends
-
 	token := c.Param("token")
 	username := c.Param("username")
 	sentUsername := c.Param("sentUsername")

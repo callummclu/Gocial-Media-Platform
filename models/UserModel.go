@@ -7,6 +7,7 @@ import (
 
 	"github.com/callummclu/Gocial-Media-Platform/auth"
 	"github.com/callummclu/Gocial-Media-Platform/configs"
+	"github.com/callummclu/Gocial-Media-Platform/middleware"
 	"github.com/lib/pq"
 )
 
@@ -213,6 +214,22 @@ func SendUserInvitation(username string, sentUsername string, token string) erro
 	}
 	defer db.Close()
 
+	// Check request isnt already sent/received
+
+	var username_received_requests []string
+
+	username_received_stmt := "SELECT received_invitations from users WHERE username=$1"
+
+	if err := db.QueryRow(username_received_stmt, username).Scan(pq.Array(&username_received_requests)); err != nil {
+		return errors.New("Failed to get username requests")
+	}
+
+	if middleware.Contains(username_received_requests, sentUsername) {
+		fmt.Println("request already received")
+
+		return errors.New("No need to send already received")
+	}
+
 	var username_sent_requests []string
 	var sentUsername_received_requests []string
 
@@ -225,12 +242,10 @@ func SendUserInvitation(username string, sentUsername string, token string) erro
 
 	}
 
-	// Check to see if sentUsername is in username_sent_request
-	// Return already sent
-
-	/*
-		NEED A CHECK TO SEE IF sentUsername is already in recieved_requests for username to ensure this data is not doubled up
-	*/
+	if middleware.Contains(username_sent_requests, sentUsername) {
+		fmt.Println("request already sent")
+		return errors.New("request already sent")
+	}
 
 	if err := db.QueryRow(sentUsername_stmt, sentUsername).Scan(pq.Array(&sentUsername_received_requests)); err != nil {
 		fmt.Print("sentUsername requests")

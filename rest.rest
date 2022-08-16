@@ -49,4 +49,4 @@ GET http://localhost:3001/post/callummclu/4/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 
 ###
 
-GET http://localhost:3001/user/invitation/callummclu/testUser
+POST http://localhost:3001/user/invitation/callummclu/testUser/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE2NjA2NTc2MjUsImlzcyI6Imp3dGdvLmlvIiwidXNlciI6ImNhbGx1bW1jbHUifQ.Y_7IpXmDl7BXIatf8SngOIIrzlftnC0CFlmRYM_pYEY
