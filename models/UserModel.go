@@ -33,11 +33,12 @@ type LogInUser struct {
 }
 
 type ReturnedUser struct {
-	Name         string `json:"name"`
-	Surname      string `json:"surname"`
-	Username     string `json:"username"`
-	DisplayImage string `json:"display_image"`
-	Description  string `json:"description"`
+	Name         string   `json:"name"`
+	Surname      string   `json:"surname"`
+	Username     string   `json:"username"`
+	DisplayImage string   `json:"display_image"`
+	Description  string   `json:"description"`
+	Friends      []string `json:"friends"`
 }
 
 type ReturnedUsers struct {
@@ -79,13 +80,14 @@ func (u *User) SaveUser() error {
 				return err
 			}
 			//Add the new user
-			insert_stmt, err := db.Prepare("INSERT INTO users (name,surname,username,email,password) VALUES ($1,$2,$3,$4,$5)")
+			insert_stmt, err := db.Prepare("INSERT INTO users (name,surname,username,email,password,display_image,description,friends) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)")
 
 			if err != nil {
 				return err
 			}
 			defer insert_stmt.Close()
-			_, err = insert_stmt.Exec(u.Name, u.Surname, u.Username, u.Email, hashedPassword)
+			var emptyString []string = nil
+			_, err = insert_stmt.Exec(u.Name, u.Surname, u.Username, u.Email, hashedPassword, "", "", pq.Array(emptyString))
 
 			return err
 		} else {
@@ -128,7 +130,7 @@ func (u *LogInUser) UserLogin() (string, error) {
 	return username, err
 }
 
-func (u *ReturnedUser) GetUserByUsername(query string) error {
+func (u *ReturnedUser) GetUserByUsernameQuery(query string) error {
 	db, err := configs.GetDB()
 	if err != nil {
 		err = errors.New("DB connection error")
@@ -136,7 +138,7 @@ func (u *ReturnedUser) GetUserByUsername(query string) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT username, name, surname, display_image, description FROM users WHERE username = $1", query).Scan(&u.Name, &u.Surname, &u.Username, &u.DisplayImage, &u.Description)
+	err = db.QueryRow("SELECT username, name, surname, display_image, description, friends FROM users WHERE username = $1", query).Scan(&u.Name, &u.Surname, &u.Username, &u.DisplayImage, &u.Description, pq.Array(&u.Friends))
 
 	return err
 }
@@ -398,6 +400,127 @@ func AcceptUserFriendRequest(username string, sentUsername string, token string)
 	}
 
 	_, err = db.Exec(save_SentUsername_friends_stmt, pq.Array(sentUsername_friends), sentUsername)
+
+	if err != nil {
+		fmt.Print("sentUsername")
+		panic(err)
+		return err
+	}
+
+	return nil
+}
+
+func RemoveUserFriend(username string, sentUsername string, token string) error {
+
+	err := auth.CheckJWT(token, &username)
+
+	if err != nil {
+		return errors.New("invalid token")
+	}
+
+	db, err := configs.GetDB()
+	if err != nil {
+		fmt.Print("DB ERRRO")
+		err = errors.New("DB connection error")
+		return err
+	}
+	defer db.Close()
+
+	var username_friends []string
+	var sentUsername_friends []string
+
+	username_friends_stmt := "SELECT friends from users WHERE username=$1"
+	sentUsername_friends_stmt := "SELECT friends from users WHERE username=$1"
+
+	if err := db.QueryRow(username_friends_stmt, username).Scan(pq.Array(&username_friends)); err != nil {
+		return errors.New("Failed to get username friends")
+	}
+	if err := db.QueryRow(sentUsername_friends_stmt, sentUsername).Scan(pq.Array(&sentUsername_friends)); err != nil {
+		return errors.New("Failed to get username friends")
+	}
+
+	middleware.Remove(username_friends, sentUsername)
+	middleware.Remove(sentUsername_friends, username)
+
+	save_username_friends_stmt := "UPDATE users SET friends = $1 WHERE username = $2"
+	save_SentUsername_friends_stmt := "UPDATE users SET friends = $1 WHERE username = $2"
+
+	_, err = db.Exec(save_username_friends_stmt, pq.Array(username_friends), username)
+
+	if err != nil {
+		fmt.Print("username")
+		panic(err)
+		return err
+	}
+
+	_, err = db.Exec(save_SentUsername_friends_stmt, pq.Array(sentUsername_friends), sentUsername)
+
+	if err != nil {
+		fmt.Print("sentUsername")
+		panic(err)
+		return err
+	}
+	return nil
+}
+
+func RemoveUserInvitation(username string, sentUsername string, token string) error {
+
+	err := auth.CheckJWT(token, &username)
+
+	if err != nil {
+		return errors.New("invalid token")
+	}
+
+	db, err := configs.GetDB()
+	if err != nil {
+		fmt.Print("DB ERRRO")
+		err = errors.New("DB connection error")
+		return err
+	}
+	defer db.Close()
+
+	var username_sent_requests []string
+	var username_received_requests []string
+	var sentUsername_sent_requests []string
+	var sentUsername_received_requests []string
+
+	username_stmt := "SELECT sent_invitations, received_invitations from users WHERE username=$1"
+	sentUsername_stmt := "SELECT sent_invitations, received_invitations from users WHERE username=$1"
+
+	if err := db.QueryRow(username_stmt, username).Scan(pq.Array(&username_sent_requests), pq.Array(&username_received_requests)); err != nil {
+		fmt.Print("username requests")
+		return errors.New("Failed to get username requests")
+	}
+	if err := db.QueryRow(sentUsername_stmt, sentUsername).Scan(pq.Array(&sentUsername_sent_requests), pq.Array(&sentUsername_received_requests)); err != nil {
+		fmt.Print("username requests")
+		return errors.New("Failed to get username requests")
+	}
+
+	if middleware.Contains(username_sent_requests, sentUsername) {
+		middleware.Remove(username_sent_requests, sentUsername)
+	}
+	if middleware.Contains(username_received_requests, sentUsername) {
+		middleware.Remove(username_received_requests, sentUsername)
+	}
+	if middleware.Contains(sentUsername_sent_requests, username) {
+		middleware.Remove(sentUsername_sent_requests, username)
+	}
+	if middleware.Contains(sentUsername_received_requests, username) {
+		middleware.Remove(sentUsername_received_requests, username)
+	}
+
+	save_username_stmt := "UPDATE users SET sent_invitations = $1, received_invitations = $2 WHERE username = $3"
+	save_SentUsername_stmt := "UPDATE users SET sent_invitations = $1, received_invitations = $2 WHERE username = $3"
+
+	_, err = db.Exec(save_username_stmt, pq.Array(username_sent_requests), pq.Array(username_received_requests), username)
+
+	if err != nil {
+		fmt.Print("username")
+		panic(err)
+		return err
+	}
+
+	_, err = db.Exec(save_SentUsername_stmt, pq.Array(sentUsername_sent_requests), pq.Array(sentUsername_received_requests), sentUsername)
 
 	if err != nil {
 		fmt.Print("sentUsername")

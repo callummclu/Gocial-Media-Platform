@@ -9,9 +9,9 @@ func AcceptFriendRequest(c *gin.Context) {
 
 	token := c.Param("token")
 	username := c.Param("username")
-	sentUsername := c.Param("sentUsername")
+	friendUsername := c.Param("friendUsername")
 
-	err := models.AcceptUserFriendRequest(username, sentUsername, token)
+	err := models.AcceptUserFriendRequest(username, friendUsername, token)
 
 	if err != nil {
 		c.JSON(400, gin.H{"error": err})
@@ -35,14 +35,16 @@ func GetUsersFriends(c *gin.Context) {
 }
 
 func DeleteFriend(c *gin.Context) {
-	// Check token is valid
+	token := c.Param("token")
+	username := c.Param("username")
+	friendUsername := c.Param("friendUsername")
 
-	// GET friends from username
-	// GET friends from sentUsername
+	err := models.RemoveUserFriend(username, friendUsername, token)
 
-	// friends_username = remove sentUsername
-	// friends_sentUsername = remove username
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+		return
+	}
 
-	// UPDATE users SET friends = friends_username WHERE username=username
-	// UPDATE users SET friends = friends_sentUsername WHERE username=sentUsername
+	c.JSON(200, gin.H{"message": "friend removed successfully"})
 }

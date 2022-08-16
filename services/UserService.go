@@ -108,7 +108,8 @@ func GetUserByUsername(c *gin.Context) {
 	var user models.ReturnedUser
 
 	var username string = c.Param("username")
-	err := user.GetUserByUsername(username)
+
+	err := user.GetUserByUsernameQuery(username)
 
 	if err != nil {
 		c.JSON(400, gin.H{"error": "Cannot find user"})
@@ -164,6 +165,15 @@ func CreateNewUser(c *gin.Context) {
 func DeleteOneUser(c *gin.Context) {
 	var user models.LogInUser
 	c.BindJSON(&user)
+
+	token := c.Param("token")
+
+	err := auth.CheckJWT(token, &user.User)
+
+	if err != nil {
+		c.JSON(403, gin.H{"error": "forbidden"})
+		return
+	}
 
 	db, err := configs.GetDB()
 

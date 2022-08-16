@@ -3,18 +3,18 @@ POST http://localhost:3001/user
 {
     "name":"rowan",
     "surname":"rowan",
-    "email":"abcde@email.com",
-    "password":"123",
-    "username":"fedcba"
+    "email":"12@email.com",
+    "username":"test",
+    "password":"test"
 }
 
 ###
 
-DELETE http://localhost:3001/user
+DELETE http://localhost:3001/user/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE2NjA2NjE5MzksImlzcyI6Imp3dGdvLmlvIiwidXNlciI6IjMyMSJ9.3Pj0n1hGuyCZQ_AwzAOodR--X9XBxBzTNmV9x8Yq71k
 
 {
-    "username":"321",
-    "password":"123"
+    "username":"test",
+    "password":"test"
 }
 
 ###
@@ -22,17 +22,13 @@ DELETE http://localhost:3001/user
 POST http://localhost:3001/auth/login
 
 {
-    "username":"callummclu",
-    "password":"010305"
+    "username":"test",
+    "password":"test"
 }
 
 ###
 
-GET http://localhost:3001/user/callummclu
-
-###
-
-GET http://localhost:3001/profile/fedcba
+GET http://localhost:3001/user/321
 
 ###
 
@@ -49,4 +45,12 @@ GET http://localhost:3001/post/callummclu/4/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 
 ###
 
-POST http://localhost:3001/user/friends/callummclu/testUser/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE2NjA2NTc2MjUsImlzcyI6Imp3dGdvLmlvIiwidXNlciI6ImNhbGx1bW1jbHUifQ.Y_7IpXmDl7BXIatf8SngOIIrzlftnC0CFlmRYM_pYEY/accept
+GET http://localhost:3001/user/friends/321
+
+###
+
+POST http://localhost:3001/user/invitation/123/callummclu/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE2NjA2NjM0MTksImlzcyI6Imp3dGdvLmlvIiwidXNlciI6IjEyMyJ9.-yLTzRq-v7SIT0n1-qGJMvng5lOJklNbdrX41UXGYTE
+
+###
+
+GET http://localhost:3001/user/invitation/123

@@ -67,15 +67,16 @@ func SendInvitation(c *gin.Context) {
 }
 
 func DeleteInvitation(c *gin.Context) {
+	token := c.Param("token")
+	username := c.Param("username")
+	friendUsername := c.Param("friendUsername")
 
-	// Check token is valid
+	err := models.RemoveUserInvitation(username, friendUsername, token)
 
-	// GET SENT reuquests from username
-	// GET Received requests from sentUsername
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+		return
+	}
 
-	// sent_requests = remove sentUsername
-	// received_requests = remove username
-
-	// UPDATE users SET sent_requests = sent_requests WHERE username=username
-	// UPDATE users SET received_requests = received_requests WHERE username=sentUsername
+	c.JSON(200, gin.H{"message": "friend removed successfully"})
 }
