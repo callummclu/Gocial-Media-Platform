@@ -321,7 +321,7 @@ func AcceptUserFriendRequest(username string, sentUsername string, token string)
 		return errors.New("user hasnt sent you a request")
 	}
 
-	middleware.Remove(username_received_requests, sentUsername)
+	username_received_requests = middleware.Remove(username_received_requests, sentUsername)
 
 	var username_sent_request []string
 	var sentUsername_sent_requests []string
@@ -342,16 +342,16 @@ func AcceptUserFriendRequest(username string, sentUsername string, token string)
 	}
 
 	if middleware.Contains(username_sent_request, sentUsername) {
-		middleware.Remove(username_sent_request, sentUsername)
+		username_sent_request = middleware.Remove(username_sent_request, sentUsername)
 	}
 	if middleware.Contains(username_received_requests, sentUsername) {
-		middleware.Remove(username_received_requests, sentUsername)
+		username_received_requests = middleware.Remove(username_received_requests, sentUsername)
 	}
 	if middleware.Contains(sentUsername_sent_requests, username) {
-		middleware.Remove(sentUsername_sent_requests, username)
+		sentUsername_sent_requests = middleware.Remove(sentUsername_sent_requests, username)
 	}
 	if middleware.Contains(sentUsername_received_requests, username) {
-		middleware.Remove(sentUsername_received_requests, username)
+		sentUsername_received_requests = middleware.Remove(sentUsername_received_requests, username)
 	}
 
 	save_username_stmt := "UPDATE users SET sent_invitations = $1, received_invitations = $2 WHERE username = $3"
@@ -498,16 +498,16 @@ func RemoveUserInvitation(username string, sentUsername string, token string) er
 	}
 
 	if middleware.Contains(username_sent_requests, sentUsername) {
-		middleware.Remove(username_sent_requests, sentUsername)
+		username_sent_requests = middleware.Remove(username_sent_requests, sentUsername)
 	}
 	if middleware.Contains(username_received_requests, sentUsername) {
-		middleware.Remove(username_received_requests, sentUsername)
+		username_received_requests = middleware.Remove(username_received_requests, sentUsername)
 	}
 	if middleware.Contains(sentUsername_sent_requests, username) {
-		middleware.Remove(sentUsername_sent_requests, username)
+		sentUsername_sent_requests = middleware.Remove(sentUsername_sent_requests, username)
 	}
 	if middleware.Contains(sentUsername_received_requests, username) {
-		middleware.Remove(sentUsername_received_requests, username)
+		sentUsername_received_requests = middleware.Remove(sentUsername_received_requests, username)
 	}
 
 	save_username_stmt := "UPDATE users SET sent_invitations = $1, received_invitations = $2 WHERE username = $3"
