@@ -2,6 +2,7 @@ import { Container, Title, Text, Divider, Group, Card, Avatar, Button } from "@m
 import { showNotification } from "@mantine/notifications"
 import { useEffect, useState } from "react"
 import { useParams, useSearchParams } from "react-router-dom"
+import { PuffLoader } from "react-spinners"
 import styled from "styled-components"
 import { resolveModuleNameFromCache } from "typescript"
 import { Post } from "../components/post"
@@ -105,15 +106,15 @@ function UserProfile(props:any){
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><Group mb={"xl"}><Avatar src={userData?.display_image} size={128} radius={100} /><div><Title ml="md">{username}</Title><Text ml="md">{userData?.description ?? ""}</Text></div></Group>{(loggedIn && checkUserNotSelfOrFriend()) && <Button onClick={addUser}>Add</Button>}</div>
                     <Divider/>
                     <PostContainer>
-                    {(posts?.data) ? (posts.data).map((e:any)=><Post {...e} updatePosts={[updatePosts, setUpdatePosts]} loggedInUser={loggedInUserData?.username} key={username+e.title}/>) :<Text m="xl">nothing to show.</Text>}
+                    {(posts?.data) ? (posts.data).map((e:any)=><Post {...e} updatePosts={[updatePosts, setUpdatePosts]} loggedInUser={loggedInUserData?.username} key={username+e.title}/>) :<div style={{width:"100%",height:"calc(100vh - 110px)",display:"flex",alignItems:"center",justifyContent:"center"}}><PuffLoader color="gray" size={20}/></div>}
                     </PostContainer>
                 </Card>
                 <Card style={{width:"30%",height:"calc(100vh - 110px)", position:"sticky",top:"50px"}} withBorder >
-                    <Title m="xl" order={2}>Friends</Title>
+                    <Title m="xl" order={2}>Friends ({userData?.friends.length || 0})</Title>
                     {checkUserIsSelf() ?
-                    <FriendsContainer>{loggedInUserData?.friends ? loggedInUserData.friends.map((e:any)=><Card onClick={()=>redirectToUser(e)} className="user" p="sm" radius="md" key={e}><Group><Avatar radius="xl" /><Title order={5}>{e}</Title></Group></Card>) : <Card ml="md"><Text>no friends :(</Text></Card>}</FriendsContainer>
+                    <FriendsContainer>{loggedInUserData?.friends ? loggedInUserData.friends.map((e:any)=><Card onClick={()=>redirectToUser(e)} className="user" p="sm" radius="md" key={e}><Group><Avatar radius="xl" /><Title order={5}>{e}</Title></Group></Card>) : <Card ml="md"><Text>nothing to show</Text></Card>}</FriendsContainer>
                     :
-                    <FriendsContainer>{userData?.friends ? userData.friends.map((e:any)=><Card onClick={()=>redirectToUser(e)} className="user" p="sm" radius="md" key={e}><Group><Avatar radius="xl" /><Title order={5}>{e}</Title></Group></Card>) : <Card ml="md"><Text>no friends :(</Text></Card>}</FriendsContainer>
+                    <FriendsContainer>{userData?.friends ? userData.friends.map((e:any)=><Card onClick={()=>redirectToUser(e)} className="user" p="sm" radius="md" key={e}><Group><Avatar radius="xl" /><Title order={5}>{e}</Title></Group></Card>) : <Card ml="md"><Text>nothing to show</Text></Card>}</FriendsContainer>
                     }
                     {(checkUserIsSelf() 
                         && (loggedInUserData?.received_invitations && loggedInUserData?.received_invitations.length > 0)) 

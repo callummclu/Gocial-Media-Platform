@@ -11,6 +11,8 @@ import SearchResults from './pages/SearchResults';
 import UserProfile from './pages/UserProfile';
 import Signup from './pages/signup';
 import { NewPost } from './components/newPost';
+import UserSettings from './pages/userSettings';
+import {Error} from './components/error'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -35,14 +37,16 @@ function App() {
 
   return(
     <BrowserRouter>
-      <Navbar loggedIn={[loggedIn,setLoggedIn]} username={[username,setUsername]} updatePosts={[updatePosts, setUpdatePosts]}/>
+      <Navbar loggedInUserData={[loggedInUserData, setLoggedInUserData]} loggedIn={[loggedIn,setLoggedIn]} username={[username,setUsername]} updatePosts={[updatePosts, setUpdatePosts]}/>
       {loggedIn && <NewPost updatePosts={[updatePosts, setUpdatePosts]}/>}
       <Routes>
+        <Route path="*" element={<Error/>}/>
         <Route path="" element={<Home updatePosts={[updatePosts, setUpdatePosts]} username={[username,setUsername]}/>}/>
         <Route path="login" element={<Login loggedIn={[loggedIn,setLoggedIn]}/>}/>
         <Route path="signup" element={<Signup loggedIn={[loggedIn,setLoggedIn]}/>}/>
         <Route path="results" element={<SearchResults/>}/>
         <Route path="users/:username" element={<UserProfile loggedInUserData={[loggedInUserData, setLoggedInUserData]} loggedIn={[loggedIn,setLoggedIn]} updatePosts={[updatePosts, setUpdatePosts]}/>}/>
+        <Route path="users/:username/settings" element={<UserSettings loggedInUserData={[loggedInUserData, setLoggedInUserData]} loggedIn={[loggedIn,setLoggedIn]}/>}/>
       </Routes>
     </BrowserRouter>
   )

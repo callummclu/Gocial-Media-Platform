@@ -1,6 +1,7 @@
 import { Card, Container, Title, Text, Pagination, Group, Divider, Avatar } from "@mantine/core"
 import { useEffect,useState } from "react"
 import { useSearchParams } from "react-router-dom"
+import { PuffLoader } from "react-spinners"
 import styled from "styled-components"
 
 const SearchResults = () => {
@@ -28,8 +29,8 @@ const SearchResults = () => {
             <Divider variant="dotted" labelPosition="center" label={`${users?.results ?? 0} results`}/>
             <br/>
             {users ? (users.data || users).map((e:any)=>(
-            <><Card onClick={()=>redirectToUser(e.username)} className="user" p="lg" radius="md" key={e.username}><Group><Avatar radius="xl" /><div><Title order={3}>{e.username}</Title><Text>Test Description</Text></div></Group></Card></>)
-            ): "no results"}
+            <><Card onClick={()=>redirectToUser(e.username)} className="user" p="lg" radius="md" key={e.username}><Group><Avatar src={e.display_image} radius="xl" /><div><Title order={3}>{e.username}</Title><Text color={"gray"}>{e.description}</Text></div></Group></Card></>)
+            ): <div style={{width:"100%",height:"calc(100vh - 110px)",display:"flex",alignItems:"center",justifyContent:"center"}}><PuffLoader color="gray" size={20}/></div>}
             <br/>
             <Group style={{display:"flex",flexDirection:"column",alignItems:"center","justifyContent":"center"}}>
                 <Pagination page={page} total={users?.pages ?? 0} onChange={setPage}/>
