@@ -26,6 +26,7 @@ func UserController() {
 
 		api.POST("invitation/:username/:sentUsername/:token", services.SendInvitation)
 		api.DELETE("invitation/:username/:sentUsername", services.DeleteInvitation)
+		api.POST("friends/:username/:sentUsername/:token/accept", services.AcceptFriendRequest)
 
 		api.GET("friends/:username", services.GetUsersFriends)
 		api.DELETE("friends/:username/:friendUsername", services.DeleteFriend)
