@@ -35,7 +35,7 @@ function App() {
 
   return(
     <BrowserRouter>
-      <Navbar loggedIn={[loggedIn,setLoggedIn]} username={[username,setUsername]}/>
+      <Navbar loggedIn={[loggedIn,setLoggedIn]} username={[username,setUsername]} updatePosts={[updatePosts, setUpdatePosts]}/>
       {loggedIn && <NewPost updatePosts={[updatePosts, setUpdatePosts]}/>}
       <Routes>
         <Route path="" element={<Home updatePosts={[updatePosts, setUpdatePosts]} username={[username,setUsername]}/>}/>

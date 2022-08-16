@@ -7,10 +7,75 @@ import (
 	"math"
 	"strconv"
 
+	"github.com/callummclu/Gocial-Media-Platform/auth"
 	"github.com/callummclu/Gocial-Media-Platform/configs"
 	"github.com/callummclu/Gocial-Media-Platform/models"
 	"github.com/gin-gonic/gin"
 )
+
+func GetPostsByUsername(query string) (posts []models.Post, e error) {
+	db, err := configs.GetDB()
+	if err != nil {
+		err = errors.New("DB connection error")
+		return nil, err
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT username, title, content, created_at, id FROM posts WHERE username = $1 ORDER BY created_at DESC", query)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var p []models.Post
+
+	for rows.Next() {
+		var (
+			Username  string
+			Title     string
+			Content   string
+			CreatedAt string
+			Id        int64
+		)
+
+		if err := rows.Scan(&Username, &Title, &Content, &CreatedAt, &Id); err != nil {
+			fmt.Print(err)
+		}
+
+		p = append(p, models.Post{
+			Username:  Username,
+			Title:     Title,
+			Content:   Content,
+			CreatedAt: CreatedAt,
+			ID:        Id,
+		})
+	}
+
+	return p, err
+}
+
+func DeletePostById(id int64, token string, username string) error {
+
+	err := auth.CheckJWT(token, &username)
+
+	if err != nil {
+		err = errors.New("invalid user")
+		return err
+	}
+
+	db, err := configs.GetDB()
+	if err != nil {
+		err = errors.New("DB connection error")
+		return err
+	}
+	defer db.Close()
+
+	_, err = db.Query("DELETE FROM posts WHERE id = $1", id)
+
+	return err
+}
 
 func GetPosts(c *gin.Context) {
 	var posts []models.Post
@@ -107,7 +172,7 @@ func GetPostByUsername(c *gin.Context) {
 
 	fmt.Println(username)
 
-	posts, err := models.GetPostsByUsername(username)
+	posts, err := GetPostsByUsername(username)
 
 	if err != nil {
 		c.JSON(400, gin.H{"error": "Cannot find user"})
@@ -151,7 +216,7 @@ func DeleteOnePost(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "user does not exist"})
 	}
 
-	err = models.DeletePostById(id, token, username)
+	err = DeletePostById(id, token, username)
 
 	if err != nil {
 		c.JSON(400, gin.H{"error": "cannot find post"})

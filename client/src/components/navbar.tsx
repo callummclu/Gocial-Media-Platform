@@ -11,6 +11,7 @@ import { CgProfile } from 'react-icons/cg'
 const NavIcon = (props:any) => {
     const [loggedIn,setLoggedIn] = props.loggedIn 
     const [username,setUsername] = props.username
+    const [updatePosts, setUpdatePosts] = props.updatePosts
 
 
     let userRedirect = `/users/${username}`
@@ -26,6 +27,7 @@ const NavIcon = (props:any) => {
           title:"Success",
           message:"You've logged out successfully"
         })
+        setUpdatePosts(!updatePosts)
       }
 
     return (
@@ -55,6 +57,8 @@ export const Navbar = (props:any) => {
     const [searchParams,setSearchParams] = useSearchParams()
     const [loggedIn,setLoggedIn] = props.loggedIn 
     const [username,setUsername] = props.username
+    const [updatePosts, setUpdatePosts] = props.updatePosts
+
 
     const searchUsersSubmit = (e:any) => {
         e.preventDefault()
@@ -82,7 +86,7 @@ export const Navbar = (props:any) => {
             <form onSubmit={searchUsersSubmit}>
                     <TextInput placeholder="search users..." ref={searchQueryRef}/>    
                 </form>
-            {loggedIn ? <NavIcon loggedIn={[loggedIn,setLoggedIn]} username={[username,setUsername]}/> : <Button color="green" onClick={logInHandler}>Login</Button>}
+            {loggedIn ? <NavIcon updatePosts={[updatePosts, setUpdatePosts]} loggedIn={[loggedIn,setLoggedIn]} username={[username,setUsername]}/> : <Button color="green" onClick={logInHandler}>Login</Button>}
             </Group>
         </NavbarStyled>
         <Divider pb="xl"/>
