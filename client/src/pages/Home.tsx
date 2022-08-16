@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { ClimbingBoxLoader, PuffLoader } from "react-spinners"
 import styled from "styled-components"
+import { CreateNewPost } from "../components/createNewPost"
 import { Post } from "../components/post"
 
 function Home(props:any){
@@ -28,6 +29,7 @@ function Home(props:any){
         <>
         <Container>
             <Container>
+                <CreateNewPost/>
                 <PostContainer>
                     {(posts?.data) ? (posts.data).map((e:any)=><Post {...e} updatePosts={[updatePosts, setUpdatePosts]} loggedInUser={username} key={username+e.title}/>) :<div style={{width:"100%",height:"calc(100vh - 110px)",display:"flex",alignItems:"center",justifyContent:"center"}}><PuffLoader color="gray" size={20}/></div>}
                 </PostContainer>
