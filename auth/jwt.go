@@ -30,10 +30,6 @@ func CheckJWT(token string, username *string) error {
 		return []byte(os.Getenv("JWT_KEY")), nil
 	})
 
-	claims := t.Claims.(jwt.MapClaims)
-
-	*username = claims["user"].(string)
-
 	if err != nil {
 		return err
 	} else if !t.Valid {
@@ -46,5 +42,9 @@ func CheckJWT(token string, username *string) error {
 		err = errors.New("Invalid iss")
 		return err
 	}
+
+	claims := t.Claims.(jwt.MapClaims)
+	*username = claims["user"].(string)
+
 	return nil
 }

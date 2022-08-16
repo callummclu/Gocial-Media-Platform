@@ -197,7 +197,14 @@ func GetAllFriends(username string) (f_list []string, e error) {
 	return friends, err
 }
 
-func SendUserInvitation(username string, sentUsername string) error {
+func SendUserInvitation(username string, sentUsername string, token string) error {
+
+	err := auth.CheckJWT(token, &username)
+
+	if err != nil {
+		return errors.New("Invalid Token")
+	}
+
 	db, err := configs.GetDB()
 	if err != nil {
 		fmt.Print("DB ERRRO")
