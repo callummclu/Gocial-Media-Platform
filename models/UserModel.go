@@ -216,6 +216,18 @@ func SendUserInvitation(username string, sentUsername string, token string) erro
 
 	// Check request isnt already sent/received
 
+	var username_friends []string
+
+	username_friends_stmt := "SELECT friends from users WHERE username=$1"
+
+	if err := db.QueryRow(username_friends_stmt, username).Scan(pq.Array(&username_friends)); err != nil {
+		return errors.New("Failed to get username requests")
+	}
+
+	if middleware.Contains(username_friends, sentUsername) {
+		return errors.New("you are already friends with this user")
+	}
+
 	var username_received_requests []string
 
 	username_received_stmt := "SELECT received_invitations from users WHERE username=$1"
