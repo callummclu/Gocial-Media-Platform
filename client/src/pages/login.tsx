@@ -1,14 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import { logIn} from '../helpers/authHelper'
+import { useRef  } from 'react';
+import useAuth from '../hooks/useAuth';
 import { LogInUser } from '../Types/auth';
 import { Button, Card, PasswordInput, TextInput, Title, Text} from '@mantine/core'
-import { showNotification } from '@mantine/notifications';
 
 function Login(props:any) {
-  const [loggedIn, setLoggedIn] = props.loggedIn
   const usernameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
-
+  const { login, loggedIn } = useAuth()
 
   async function formSubmitLogin(e:any){
     e.preventDefault()
@@ -16,22 +14,7 @@ function Login(props:any) {
       username: usernameRef.current!.value,
       password: passwordRef.current!.value
     }
-    let loggedIn = await logIn(LoginParams)
-    if (loggedIn === false) {
-      console.log("error incorrect details")
-      showNotification({
-        title:"Error",
-        message:"Incorrect Details Provided",
-        color:"red"
-      })
-    } else {
-      showNotification({
-        title:"Congrats",
-        message:"You've logged in",
-        color:"green"
-      })
-    }
-    setLoggedIn(loggedIn)
+    await login(LoginParams)
   }
 
   return (

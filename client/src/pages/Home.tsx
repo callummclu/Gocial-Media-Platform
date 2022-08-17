@@ -5,13 +5,14 @@ import { ClimbingBoxLoader, PuffLoader } from "react-spinners"
 import styled from "styled-components"
 import { CreateNewPost } from "../components/createNewPost"
 import { Post } from "../components/post"
+import useAuth from "../hooks/useAuth"
 
 function Home(props:any){
     const [searchParams,setSearchParams] = useSearchParams()
     const [posts,setPosts] = useState<any>()
     const [updatePosts, setUpdatePosts] = props.updatePosts
     const [page, setPage] = useState<number>(1)
-    const [username,setUsername] = props.username
+    const {user,loggedIn} = useAuth()
 
     useEffect(()=>{
         let searchParameters = searchParams.get("searchParams")
@@ -29,9 +30,9 @@ function Home(props:any){
         <>
         <Container>
             <Container>
-                <CreateNewPost/>
+                {loggedIn && <CreateNewPost updatePosts={[updatePosts, setUpdatePosts]}/>}
                 <PostContainer>
-                    {(posts?.data) ? (posts.data).map((e:any)=><Post {...e} updatePosts={[updatePosts, setUpdatePosts]} loggedInUser={username} key={username+e.title}/>) :<div style={{width:"100%",height:"calc(100vh - 110px)",display:"flex",alignItems:"center",justifyContent:"center"}}><PuffLoader color="gray" size={20}/></div>}
+                    {(posts?.data) ? (posts.data).map((e:any)=><Post {...e} updatePosts={[updatePosts, setUpdatePosts]} loggedInUser={user?.username} key={user?.username+e.title}/>) :<div style={{width:"100%",height:"calc(100vh - 110px)",display:"flex",alignItems:"center",justifyContent:"center"}}><PuffLoader color="gray" size={20}/></div>}
                 </PostContainer>
             </Container>
         </Container>

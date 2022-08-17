@@ -3,42 +3,38 @@ import { showNotification } from '@mantine/notifications'
 import { useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { logOut } from '../helpers/authHelper'
 import {FiSettings} from 'react-icons/fi'
 import {BiLogOut} from 'react-icons/bi'
 import { CgProfile } from 'react-icons/cg'
+import useAuth from '../hooks/useAuth'
 
 const NavIcon = (props:any) => {
-    const [loggedIn,setLoggedIn] = props.loggedIn 
-    const [username,setUsername] = props.username
-    const [updatePosts, setUpdatePosts] = props.updatePosts
-    const [loggedInUserData, setLoggedInUserData] = props.loggedInUserData
 
+    const {loggedIn, user, logout, reload} = useAuth()
 
 
     const goToProfile = () => {
-        let userRedirect = `/users/${username}`
+        let userRedirect = `/users/${user?.username}`
 
         window.location.href = window.location.origin + userRedirect
     }
 
     const goToSettings = () => {
-        let settingsRedirect = `/users/${username}/settings`
+        let settingsRedirect = `/users/${user?.username}/settings`
         window.location.href = window.location.origin + settingsRedirect
     }
 
     const logOutHandler = async () => {
-        setLoggedIn(await logOut())
-        setUsername("")
+        logout()
         showNotification({
           title:"Success",
           message:"You've logged out successfully"
         })
-        setUpdatePosts(!updatePosts)
+        reload()
       }
 
     const isNotifications = () => {
-        return (loggedInUserData?.received_invitations || []).length > 0
+        return (user?.received_invitations || []).length > 0
     }
       
     return (
@@ -49,16 +45,16 @@ const NavIcon = (props:any) => {
 
                     {isNotifications() ? 
                     <Indicator color="red" size={12} withBorder>
-                        <Avatar src={props.icon} style={{cursor:"pointer"}} radius="xl"/>
+                        <Avatar src={user?.display_image} style={{cursor:"pointer"}} radius="xl"/>
                     </Indicator>
                     :
-                    <Avatar src={props.icon} style={{cursor:"pointer"}} radius="xl"/>
+                    <Avatar src={user?.display_image} style={{cursor:"pointer"}} radius="xl"/>
                         }
 
                 </Menu.Target>
 
                 <Menu.Dropdown>
-                    <Menu.Label>{username}</Menu.Label>
+                    <Menu.Label>{user?.username}</Menu.Label>
                     <Menu.Item onClick={goToProfile} icon={<CgProfile size={14}/>}>My Profile</Menu.Item>
                     <Menu.Item onClick={goToSettings} icon={<FiSettings size={14} />}>Settings</Menu.Item>
                     <Menu.Divider />
@@ -72,12 +68,10 @@ const NavIcon = (props:any) => {
 
 export const Navbar = (props:any) => {
 
+    const {loggedIn} = useAuth()
+
     const searchQueryRef = useRef<HTMLInputElement>(null)
     const [searchParams,setSearchParams] = useSearchParams()
-    const [loggedIn,setLoggedIn] = props.loggedIn 
-    const [username,setUsername] = props.username
-    const [updatePosts, setUpdatePosts] = props.updatePosts
-    const [loggedInUserData, setLoggedInUserData] = props.loggedInUserData
 
 
     const searchUsersSubmit = (e:any) => {
@@ -104,7 +98,7 @@ export const Navbar = (props:any) => {
             <form onSubmit={searchUsersSubmit}>
                     <TextInput placeholder="search users..." ref={searchQueryRef}/>    
                 </form>
-            {loggedIn ? <NavIcon loggedInUserData={[loggedInUserData, setLoggedInUserData]} icon={loggedInUserData?.display_image} updatePosts={[updatePosts, setUpdatePosts]} loggedIn={[loggedIn,setLoggedIn]} username={[username,setUsername]}/> : <Button color="green" onClick={logInHandler}>Login</Button>}
+            {loggedIn ? <NavIcon/> : <Button color="green" onClick={logInHandler}>Login</Button>}
             </Group>
         </NavbarStyled>
         <Divider pb="xl"/>

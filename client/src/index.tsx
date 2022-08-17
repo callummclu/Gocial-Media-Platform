@@ -3,6 +3,7 @@ import { NotificationsProvider } from '@mantine/notifications';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { AuthProvider } from './hooks/useAuth';
 import './styles/index.css'
 
 const root = ReactDOM.createRoot(
@@ -10,10 +11,12 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <MantineProvider>
-      <NotificationsProvider>
-        <App />
-      </NotificationsProvider>
-    </MantineProvider>
+    <AuthProvider>
+      <MantineProvider>
+        <NotificationsProvider>
+          <App />
+        </NotificationsProvider>
+      </MantineProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
