@@ -32,7 +32,7 @@ function Home(props:any){
             <Container>
                 {loggedIn && <CreateNewPost updatePosts={[updatePosts, setUpdatePosts]}/>}
                 <PostContainer>
-                    {(posts?.data) ? (posts.data).map((e:any)=><Post {...e} updatePosts={[updatePosts, setUpdatePosts]} loggedInUser={user?.username} key={user?.username+e.title}/>) :<div style={{width:"100%",height:"calc(100vh - 110px)",display:"flex",alignItems:"center",justifyContent:"center"}}><PuffLoader color="gray" size={20}/></div>}
+                    {(posts?.data) ? (posts.data).map((e:any)=><Post {...e} updatePosts={[updatePosts, setUpdatePosts]} key={user?.username+e.title}/>) :<div style={{width:"100%",height:"calc(100vh - 110px)",display:"flex",alignItems:"center",justifyContent:"center"}}><PuffLoader color="gray" size={20}/></div>}
                 </PostContainer>
             </Container>
         </Container>

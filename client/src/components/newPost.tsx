@@ -3,6 +3,7 @@ import { showNotification } from "@mantine/notifications";
 import { useRef, useState } from "react";
 import {HiOutlineDocumentAdd} from 'react-icons/hi'
 import { newPostPost } from "../helpers/postHelper";
+import usePost from "../hooks/usePost";
 import { Post } from "../Types/post";
 
 export const NewPost = (props:any) => {
@@ -13,7 +14,7 @@ export const NewPost = (props:any) => {
     const titleRef = useRef<HTMLInputElement>(null)
     const contentRef = useRef<HTMLTextAreaElement>(null)
 
-    const newPost = async (e:any) => {
+    const newPostForm = async (e:any) => {
         e.preventDefault()
         let postParams: Post = {
             title: titleRef.current!.value,
@@ -49,7 +50,7 @@ export const NewPost = (props:any) => {
         onClose={() => setOpened(false)}
         title="Create a new Post!"
       >
-        <form onSubmit={newPost}>
+        <form onSubmit={newPostForm}>
           <TextInput label="Title" ref={titleRef} type="name" required/>
           <Textarea label="Content" ref={contentRef} required/>
           <Button mt="sm" type="submit">Post</Button>

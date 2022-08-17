@@ -7,10 +7,12 @@ import {removePost} from '../helpers/postHelper'
 import {BsThreeDots} from 'react-icons/bs'
 import {BiTrash} from 'react-icons/bi'
 import {FiEdit2} from 'react-icons/fi'
+import useAuth from "../hooks/useAuth"
 
 export const Post = (props:any) => {
 
     const [updatePosts, setUpdatePosts] = props.updatePosts
+    const {user} = useAuth()
 
     dayjs.extend(relativeTime)
 
@@ -20,7 +22,7 @@ export const Post = (props:any) => {
     const deletePost = () => {
         let token = localStorage.getItem("gocial_auth_token") || ""
 
-        removePost(props.id,token,props.loggedInUser)
+        removePost(props.id,token,user?.username ?? "")
         setUpdatePosts(!updatePosts)
 
     }
@@ -32,7 +34,7 @@ export const Post = (props:any) => {
     return (
         <Card radius="md" withBorder style={{marginTop:"30px",overflow:"hidden"}}>
         <PostContainer>
-        {props.loggedInUser === props.username && <div style={{position:"absolute",top:25,right:25}}>
+        {user?.username === props.username && <div style={{position:"absolute",top:25,right:25}}>
             <Menu position="left-start" width={130}>
                 <Menu.Target>
                     <BsThreeDots style={{cursor:"pointer"}} color="gray"/>
