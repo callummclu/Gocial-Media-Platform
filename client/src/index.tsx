@@ -4,7 +4,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { AuthProvider } from './hooks/useAuth';
-import { PostProvider } from './hooks/usePost';
 import './styles/index.css'
 
 const root = ReactDOM.createRoot(
@@ -13,13 +12,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <PostProvider>
       <MantineProvider>
         <NotificationsProvider>
           <App />
         </NotificationsProvider>
       </MantineProvider>
-      </PostProvider>
     </AuthProvider>
   </React.StrictMode>
 );

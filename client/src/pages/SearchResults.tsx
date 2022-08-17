@@ -3,6 +3,8 @@ import { useEffect,useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { PuffLoader } from "react-spinners"
 import styled from "styled-components"
+import { getUserDetails } from "../api/users"
+import * as userHelper from "../helpers/userHelper"
 
 const SearchResults = () => {
     const [searchParams,setSearchParams] = useSearchParams()
@@ -11,7 +13,7 @@ const SearchResults = () => {
 
     useEffect(()=>{
         let searchParameters = searchParams.get("searchParams")
-        fetch(`${process.env.REACT_APP_BACKEND_URI}/user?searchParams=${searchParameters}&itemsPerPage=20&page=${page}`)
+        userHelper.getUser(searchParameters as string, page)
             .then(async (res:any) => {
                 let res_json = await res.json()
                 setUsers(res_json)

@@ -6,7 +6,10 @@ import { PuffLoader } from "react-spinners"
 import styled from "styled-components"
 import { resolveModuleNameFromCache } from "typescript"
 import { Post } from "../components/post"
+import { getPostsByUsername } from "../helpers/postHelper"
+import { acceptFriendRequest, getSingleUser, sendInvitation } from "../helpers/userHelper"
 import useAuth from "../hooks/useAuth"
+import { User } from "../Types/auth"
 import { PostContainer } from "./Home"
 
 function UserProfile(props:any){
@@ -20,10 +23,7 @@ function UserProfile(props:any){
     const [posts,setPosts] = useState<any>()
     
     useEffect(()=>{
-
-        let uri = `${process.env.REACT_APP_BACKEND_URI}/post/${username}`
-
-        fetch(uri)
+        getPostsByUsername(username as string)
             .then(async (res:any) => {
                 let res_json = await res.json()
                 setPosts(res_json)
@@ -32,7 +32,7 @@ function UserProfile(props:any){
 
 
     useEffect(()=>{
-        fetch(`${process.env.REACT_APP_BACKEND_URI}/user/${username}`)
+        getSingleUser(username as string)
             .then(async (res:any) => {
                 let res_json = await res.json()
                 setUserData(res_json.data)
@@ -56,9 +56,8 @@ function UserProfile(props:any){
     }
 
     const addUser = () => {
-        fetch(`${process.env.REACT_APP_BACKEND_URI}/user/invitation/${user?.username}/${username}/${localStorage.getItem("gocial_auth_token")}`,{
-            method:"POST"
-        }).then(async (res:any) => {
+        sendInvitation(user as User, username as string)
+            .then(async (res:any) => {
             let res_json = await res.json()
 
             if(res_json?.error ?? false){
@@ -78,9 +77,8 @@ function UserProfile(props:any){
     }
 
     const acceptRequest = (req_user:string) => {
-        fetch(`${process.env.REACT_APP_BACKEND_URI}/user/friends/${user?.username}/${req_user}/${localStorage.getItem("gocial_auth_token")}/accept`,{
-            method:"POST"
-        }).then(async (res:any) => {
+        acceptFriendRequest(user as User, req_user)
+            .then(async (res:any) => {
             let res_json = await res.json()
 
             if(res_json?.error ?? false){
@@ -108,7 +106,7 @@ function UserProfile(props:any){
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><Group mb={"xl"}><Avatar src={userData?.display_image} size={128} radius={100} /><div><Title ml="md">{username}</Title><Text ml="md">{userData?.description ?? ""}</Text></div></Group>{(loggedIn && checkUserNotSelfOrFriend()) && <Button onClick={addUser}>Add</Button>}</div>
                     <Divider/>
                     <PostContainer>
-                    {(posts?.data) ? (posts.data).map((e:any)=><Post {...e} updatePosts={[updatePosts, setUpdatePosts]} loggedInUser={user?.username} key={username+e.title}/>) :<div style={{width:"100%",height:"calc(100vh - 110px)",display:"flex",alignItems:"center",justifyContent:"center"}}><PuffLoader color="gray" size={20}/></div>}
+                    {(posts?.data) ? (posts.data).map((e:any)=><Post {...e} updatePosts={[updatePosts, setUpdatePosts]} key={username+e.title}/>) :<div style={{width:"100%",height:"calc(100vh - 110px)",display:"flex",alignItems:"center",justifyContent:"center"}}><PuffLoader color="gray" size={20}/></div>}
                     </PostContainer>
                 </Card>
                 <Card style={{width:"30%",height:"calc(100vh - 110px)", position:"sticky",top:"50px"}} withBorder >

@@ -3,7 +3,6 @@ import { showNotification } from "@mantine/notifications";
 import { useRef, useState } from "react";
 import {HiOutlineDocumentAdd} from 'react-icons/hi'
 import { newPostPost } from "../helpers/postHelper";
-import usePost from "../hooks/usePost";
 import { Post } from "../Types/post";
 
 export const NewPost = (props:any) => {

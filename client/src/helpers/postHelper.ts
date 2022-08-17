@@ -30,3 +30,13 @@ export async function removePost(id:string, token:string,username:string){
         return false
     })
 }
+
+export function getPosts(searchParameters?:string,page:string="1",itemsPerPage:string="20"){
+    let uri = (searchParameters && searchParameters.length>0 ? `${process.env.REACT_APP_BACKEND_URI}/post?searchParams=${searchParameters}&itemsPerPage=${itemsPerPage}&page=${page}` : `${process.env.REACT_APP_BACKEND_URI}/post`)
+    return fetch(uri)
+}
+
+export function getPostsByUsername(username:string){
+    let uri = `${process.env.REACT_APP_BACKEND_URI}/post/${username}`
+    return fetch(uri)
+}
