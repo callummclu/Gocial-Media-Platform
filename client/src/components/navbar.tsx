@@ -90,8 +90,8 @@ export const Navbar = (props:any) => {
     return (
         <>
         <NavbarStyled>
-            <div style={{width: 100, cursor:"pointer" }}>
-                <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Go_Logo_Blue.svg/1280px-Go_Logo_Blue.svg.png" onClick={()=>window.location.href = window.location.origin}/> 
+            <div style={{width: 150, cursor:"pointer" }}>
+                <Image src="https://i.imgur.com/5X5MMzn.png" onClick={()=>window.location.href = window.location.origin}/> 
             </div>
                 
             <Group style={{display:"flex","justifyContent":"center",height:"70px"}}>
