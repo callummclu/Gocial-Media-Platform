@@ -11,8 +11,7 @@ func AuthController() {
 		api.Use(middleware.CORSMiddleware("*"))
 		api.POST("login", services.LoginUser)
 		api.GET(":token", services.CheckUser)
-		// THIS NEEDS AUTH MIDDLEWARE
-		//api.POST("password", services.ChangeUserPassword)
+		api.POST("password", services.ChangeUserPassword)
 	}
 
 }

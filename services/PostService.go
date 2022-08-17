@@ -56,6 +56,33 @@ func GetPostsByUsername(query string) (posts []models.Post, e error) {
 	return p, err
 }
 
+/*
+
+	THIS EDIT POST FUNCTION IS UNFINISHED
+
+*/
+
+func EditPostById(id int64, token string, username string) error {
+	err := auth.CheckJWT(token, &username)
+
+	if err != nil {
+		err = errors.New("invalid user")
+		return err
+	}
+
+	db, err := configs.GetDB()
+	if err != nil {
+		err = errors.New("DB connection error")
+		return err
+	}
+	defer db.Close()
+
+	// _, err = db.Query("DELETE FROM posts WHERE id = $1", id)
+
+	return err
+
+}
+
 func DeletePostById(id int64, token string, username string) error {
 
 	err := auth.CheckJWT(token, &username)
@@ -224,4 +251,25 @@ func DeleteOnePost(c *gin.Context) {
 
 	c.JSON(200, gin.H{"message": "post succesfully deleted"})
 }
-func EditOnePost(c *gin.Context) {}
+
+func EditOnePost(c *gin.Context) {
+	str_id := c.Param("id")
+
+	token := c.Param("token")
+
+	username := c.Param("username")
+
+	id, err := strconv.ParseInt(str_id, 10, 64)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": "user does not exist"})
+	}
+
+	err = EditPostById(id, token, username)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": "cannot find post"})
+	}
+
+	c.JSON(200, gin.H{"message": "edited post successfully"})
+}

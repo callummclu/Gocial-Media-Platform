@@ -220,4 +220,57 @@ func DeleteOneUser(c *gin.Context) {
 	return
 }
 
-func EditOneUser(c *gin.Context) {}
+/*
+
+	----------------------------------------
+	THESE TWO FUNCTIONS BELOW ARE UNFINISHED
+	----------------------------------------
+
+*/
+
+func EditOneUser(c *gin.Context) {
+	var user models.LogInUser
+	c.BindJSON(&user)
+
+	token := c.Param("token")
+
+	err := auth.CheckJWT(token, &user.User)
+
+	if err != nil {
+		c.JSON(403, gin.H{"error": "forbidden"})
+		return
+	}
+
+	db, err := configs.GetDB()
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": "DB Failed to Connect"})
+		return
+	}
+
+	defer db.Close()
+
+}
+
+func ChangeUserPassword(c *gin.Context) {
+	var user models.LogInUser
+	c.BindJSON(&user)
+
+	token := c.Param("token")
+
+	err := auth.CheckJWT(token, &user.User)
+
+	if err != nil {
+		c.JSON(403, gin.H{"error": "forbidden"})
+		return
+	}
+
+	db, err := configs.GetDB()
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": "DB Failed to Connect"})
+		return
+	}
+
+	defer db.Close()
+}
