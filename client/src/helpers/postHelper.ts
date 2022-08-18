@@ -40,3 +40,8 @@ export function getPostsByUsername(username:string){
     let uri = `${process.env.REACT_APP_BACKEND_URI}/post/${username}`
     return fetch(uri)
 }
+
+export function getFeedByUsername(username:string){
+    let uri = `${process.env.REACT_APP_BACKEND_URI}/feed/friends/${username}`
+    return fetch(uri)
+}

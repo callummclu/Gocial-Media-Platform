@@ -53,4 +53,4 @@ POST http://localhost:3001/user/invitation/test/callummclu/eyJhbGciOiJIUzI1NiIsI
 
 ###
 
-GET http://localhost:3001/user/invitation/test
+GET http://localhost:3001/feed/friends/callummclu

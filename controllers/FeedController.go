@@ -10,6 +10,6 @@ func FeedController() {
 	{
 		api.Use(middleware.CORSMiddleware("*"))
 
-		api.GET("friends", services.GetFriendsFeed)
+		api.GET("friends/:username", services.GetFriendsFeed)
 	}
 }

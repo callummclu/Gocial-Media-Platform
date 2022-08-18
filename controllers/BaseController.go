@@ -14,5 +14,6 @@ func BaseController() {
 	PostController()
 	AuthController()
 	ImageController()
+	FeedController()
 	Router.Run(configs.EnvPORT())
 }
