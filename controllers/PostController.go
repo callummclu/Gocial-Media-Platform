@@ -17,6 +17,7 @@ func PostController() {
 		api.PUT(":id/:token", services.EditOnePost)
 
 		api.POST("like/:id/:username/:token", services.LikePost)
+		api.GET("like/:username", services.GetLikedPostsByUsername)
 
 	}
 

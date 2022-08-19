@@ -6,6 +6,7 @@ import (
 	"log"
 	"math"
 	"strconv"
+	"strings"
 
 	"github.com/callummclu/Gocial-Media-Platform/auth"
 	"github.com/callummclu/Gocial-Media-Platform/configs"
@@ -369,4 +370,104 @@ func LikePost(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{"message": "liked post successfully"})
+}
+
+func getLikedPostsByUsernameHelper(username string) (l_posts []string, e error) {
+	db, err := configs.GetDB()
+	if err != nil {
+		fmt.Println("DB")
+
+		err = errors.New("DB connection error")
+		return nil, err
+	}
+	defer db.Close()
+
+	var liked_posts []string
+
+	stmt := "SELECT likes FROM users WHERE username=$1"
+
+	if err := db.QueryRow(stmt, username).Scan(pq.Array(&liked_posts)); err != nil {
+		fmt.Println("cant find user")
+		return nil, err
+	}
+
+	return liked_posts, err
+}
+
+func getPostsByIdList(ids []string) ([]models.Post, error) {
+	db, err := configs.GetDB()
+	if err != nil {
+		err = errors.New("DB connection error")
+		fmt.Println("DB")
+
+		return nil, err
+	}
+	defer db.Close()
+
+	likedPostsIds := strings.Trim(strings.Join(strings.Fields(fmt.Sprint(ids)), ", "), "")
+
+	likedPostsIds = strings.ReplaceAll(likedPostsIds, "[", "")
+	likedPostsIds = strings.ReplaceAll(likedPostsIds, "]", "")
+
+	rows, err := db.Query("SELECT username,title,content,created_at,id,likes from posts where id = ANY($1::int[]) ORDER BY created_at DESC", ("{" + likedPostsIds + "}"))
+
+	if err != nil {
+		fmt.Println("Query")
+
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var p []models.Post
+
+	for rows.Next() {
+		var (
+			Username  string
+			Title     string
+			Content   string
+			CreatedAt string
+			Id        int64
+			Likes     []string
+		)
+
+		if err := rows.Scan(&Username, &Title, &Content, &CreatedAt, &Id, pq.Array(&Likes)); err != nil {
+			fmt.Println("Scan")
+
+			fmt.Print(err)
+		}
+
+		p = append(p, models.Post{
+			Username:  Username,
+			Title:     Title,
+			Content:   Content,
+			CreatedAt: CreatedAt,
+			ID:        Id,
+			Likes:     Likes,
+		})
+	}
+
+	return p, err
+}
+
+func GetLikedPostsByUsername(c *gin.Context) {
+
+	username := c.Param("username")
+
+	likedPostsIds, err := getLikedPostsByUsernameHelper(username)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+		return
+	}
+
+	posts, err := getPostsByIdList(likedPostsIds)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+		return
+	}
+
+	c.JSON(200, gin.H{"posts": posts})
+
 }
