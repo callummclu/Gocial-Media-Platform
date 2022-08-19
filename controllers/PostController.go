@@ -16,6 +16,8 @@ func PostController() {
 		api.GET(":username/:id/:token", services.DeleteOnePost)
 		api.PUT(":id/:token", services.EditOnePost)
 
+		api.POST("like/:id/:username/:token", services.LikePost)
+
 	}
 
 }

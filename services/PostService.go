@@ -273,3 +273,53 @@ func EditOnePost(c *gin.Context) {
 
 	c.JSON(200, gin.H{"message": "edited post successfully"})
 }
+
+func LikePostById(id int64, token string, username string) error {
+	err := auth.CheckJWT(token, &username)
+
+	if err != nil {
+		err = errors.New("invalid user")
+		return err
+	}
+
+	db, err := configs.GetDB()
+	if err != nil {
+		err = errors.New("DB connection error")
+		return err
+	}
+	defer db.Close()
+
+	// check if user has already liked post
+
+	// if user already likes
+	// remove them from likes
+	// remove post from their likes
+	// else
+	// add them to likes
+	// add post to their likes
+
+	return nil
+}
+
+func LikePost(c *gin.Context) {
+
+	str_id := c.Param("id")
+
+	token := c.Param("token")
+
+	username := c.Param("username")
+
+	id, err := strconv.ParseInt(str_id, 10, 64)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": "user does not exist"})
+	}
+
+	err = LikePostById(id, token, username)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": "cannot find post"})
+	}
+
+	c.JSON(200, gin.H{"message": "edited post successfully"})
+}

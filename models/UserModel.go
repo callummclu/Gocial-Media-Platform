@@ -23,6 +23,7 @@ type User struct {
 	EmailVerifiedAt     string   `json:"email_verified_at,omitempty"`
 	Password            string   `json:"password,omitempty"`
 	CreatedAt           string   `json:"created_at,omitempty"`
+	Likes               []string `json:"likes"`
 }
 
 type LogInUser struct {
@@ -79,7 +80,7 @@ func (u *User) SaveUser() error {
 				return err
 			}
 			//Add the new user
-			insert_stmt, err := db.Prepare("INSERT INTO users (name,surname,username,email,password,display_image,description,friends,received_invitations) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$8)")
+			insert_stmt, err := db.Prepare("INSERT INTO users (name,surname,username,email,password,display_image,description,friends,received_invitations,likes) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$8,$8)")
 
 			if err != nil {
 				return err
