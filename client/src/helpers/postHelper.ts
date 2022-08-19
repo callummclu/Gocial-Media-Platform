@@ -45,3 +45,9 @@ export function getFeedByUsername(username:string){
     let uri = `${process.env.REACT_APP_BACKEND_URI}/feed/friends/${username}`
     return fetch(uri)
 }
+
+export function toggleLikedPost(id:string, token:string,username:string){
+    return fetch(`${process.env.REACT_APP_BACKEND_URI}/post/like/${id}/${username}/${token}`, {
+        method:"POST"
+    })
+}

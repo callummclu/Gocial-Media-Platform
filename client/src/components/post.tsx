@@ -3,17 +3,18 @@ import styled from "styled-components"
 import ReactMarkdown from 'react-markdown'
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
-import {removePost} from '../helpers/postHelper'
+import {removePost, toggleLikedPost} from '../helpers/postHelper'
 import {BsThreeDots} from 'react-icons/bs'
 import {BiTrash} from 'react-icons/bi'
 import {AiFillLike,AiOutlineLike} from 'react-icons/ai'
 import useAuth from "../hooks/useAuth"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { showNotification } from "@mantine/notifications"
 
 export const Post = (props:any) => {
 
     const [updatePosts, setUpdatePosts] = props.updatePosts
-    const {user} = useAuth()
+    const {loggedIn,user} = useAuth()
     const [likeToggle, setLikesToggle] = useState(false)
 
     dayjs.extend(relativeTime)
@@ -29,13 +30,32 @@ export const Post = (props:any) => {
 
     }
 
+    const togglePostLike = () => {
+        let token = localStorage.getItem("gocial_auth_token") || ""
+        loggedIn ? (
+        toggleLikedPost(props.id,token,user?.username ?? "")
+        .then(()=>{
+            setUpdatePosts(!updatePosts)
+            setLikesToggle(!likeToggle)
+        })
+        ) : (
+            showNotification({
+                title:"Error - Log in",
+                message:"You need to be logged in to like posts.",
+                color:"red"
+              })
+        )
+    }
+
     const redirectToUser = (username:string) => {
         window.location.href = window.location.origin + "/users/" + username 
     }
 
-    const toggleLike = () => {
-        setLikesToggle(!likeToggle)
-    }
+
+    useEffect(()=>{
+        let likes_arr = props.likes
+        setLikesToggle((likes_arr ?? []).includes(user?.username))
+    },[])
     
     return (
         <Card radius="md" withBorder style={{marginTop:"30px",overflow:"hidden"}}>
@@ -64,7 +84,7 @@ export const Post = (props:any) => {
                 <ReactMarkdown>{props.content}</ReactMarkdown>
             </Text>
             <Divider/>
-            <Text pt="sm" style={{display:"flex",alignItems:"center",fontSize:"12px",gap:"10px"}}><UnstyledButton onClick={toggleLike}>{likeToggle ? <AiFillLike size={24}/> : <AiOutlineLike size={24}/>}</UnstyledButton> 0</Text>
+            <Text pt="sm" style={{display:"flex",alignItems:"center",fontSize:"12px",gap:"10px"}}><UnstyledButton onClick={togglePostLike}>{likeToggle ? <AiFillLike size={24}/> : <AiOutlineLike size={24}/>}</UnstyledButton>{(props.likes)?.length ?? 0}</Text>
         </PostContainer>
         </Card>
     )

@@ -7,6 +7,7 @@ import (
 	"github.com/callummclu/Gocial-Media-Platform/configs"
 	"github.com/callummclu/Gocial-Media-Platform/models"
 	"github.com/gin-gonic/gin"
+	"github.com/lib/pq"
 )
 
 func GetFriendsFeed(c *gin.Context) {
@@ -52,7 +53,7 @@ func GetFriendsFeed(c *gin.Context) {
 	users_list = strings.ReplaceAll(users_list, "]", "")
 	users_list = strings.ReplaceAll(users_list, ",", ",")
 
-	rows, err := db.Query("SELECT username,title,content,created_at,id from posts where username = ANY(ARRAY[$1]) ORDER BY created_at DESC", users_list)
+	rows, err := db.Query("SELECT username,title,content,created_at,id,likes from posts where username = ANY(ARRAY[$1]) ORDER BY created_at DESC", users_list)
 
 	if err != nil {
 		c.JSON(504, gin.H{"error": "database posts error"})
@@ -70,9 +71,10 @@ func GetFriendsFeed(c *gin.Context) {
 			Content   string
 			CreatedAt string
 			Id        int64
+			Likes     []string
 		)
 
-		if err := rows.Scan(&Username, &Title, &Content, &CreatedAt, &Id); err != nil {
+		if err := rows.Scan(&Username, &Title, &Content, &CreatedAt, &Id, pq.Array(&Likes)); err != nil {
 			fmt.Print(err)
 		}
 
@@ -82,6 +84,7 @@ func GetFriendsFeed(c *gin.Context) {
 			Content:   Content,
 			CreatedAt: CreatedAt,
 			ID:        Id,
+			Likes:     Likes,
 		})
 	}
 

@@ -23,7 +23,7 @@ func GetPostsByUsername(query string) (posts []models.Post, e error) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT username, title, content, created_at, id FROM posts WHERE username = $1 ORDER BY created_at DESC", query)
+	rows, err := db.Query("SELECT username, title, content, created_at, id, likes FROM posts WHERE username = $1 ORDER BY created_at DESC", query)
 
 	if err != nil {
 		return nil, err
@@ -40,9 +40,10 @@ func GetPostsByUsername(query string) (posts []models.Post, e error) {
 			Content   string
 			CreatedAt string
 			Id        int64
+			Likes     []string
 		)
 
-		if err := rows.Scan(&Username, &Title, &Content, &CreatedAt, &Id); err != nil {
+		if err := rows.Scan(&Username, &Title, &Content, &CreatedAt, &Id, pq.Array(&Likes)); err != nil {
 			fmt.Print(err)
 		}
 
@@ -52,6 +53,7 @@ func GetPostsByUsername(query string) (posts []models.Post, e error) {
 			Content:   Content,
 			CreatedAt: CreatedAt,
 			ID:        Id,
+			Likes:     Likes,
 		})
 	}
 
@@ -133,7 +135,7 @@ func GetPosts(c *gin.Context) {
 
 	offset = (offset - 1) * limit
 
-	rows, err := db.Query("select username,title,content,created_at,id from posts where strpos(username, $1) > 0 OR strpos(title, $1) > 0 OR strpos(content, $1) > 0 ORDER BY created_at DESC LIMIT $2 OFFSET $3 ", query, limit, offset)
+	rows, err := db.Query("select username,title,content,created_at,id,likes from posts where strpos(username, $1) > 0 OR strpos(title, $1) > 0 OR strpos(content, $1) > 0 ORDER BY created_at DESC LIMIT $2 OFFSET $3 ", query, limit, offset)
 
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -162,9 +164,10 @@ func GetPosts(c *gin.Context) {
 			Content   string
 			CreatedAt string
 			ID        int64
+			Likes     []string
 		)
 
-		if err := rows.Scan(&Username, &Title, &Content, &CreatedAt, &ID); err != nil {
+		if err := rows.Scan(&Username, &Title, &Content, &CreatedAt, &ID, pq.Array(&Likes)); err != nil {
 			fmt.Print(err)
 		}
 
@@ -174,6 +177,7 @@ func GetPosts(c *gin.Context) {
 			Content:   Content,
 			CreatedAt: CreatedAt,
 			ID:        ID,
+			Likes:     Likes,
 		})
 	}
 
