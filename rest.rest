@@ -41,7 +41,7 @@ POST http://localhost:3001/post/.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE
 
 ###
 
-GET http://localhost:3001/post/callummclu/4/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE2NjA1OTg5NTgsImlzcyI6Imp3dGdvLmlvIiwidXNlciI6ImNhbGx1bW1jbHUifQ.8mqYW4lgJA6lUbeTu7zw0I0_IwHtJ4QM14X0-BADayI"
+GET http://localhost:3001/post/
 
 ###
 
@@ -53,4 +53,7 @@ POST http://localhost:3001/user/invitation/test/callummclu/eyJhbGciOiJIUzI1NiIsI
 
 ###
 
-GET http://localhost:3001/feed/friends/callummclu
+GET http://localhost:3001/feed/friends/callumTest
+
+// post id = 50
+// token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE2NjA5NDQ2NjQsImlzcyI6Imp3dGdvLmlvIiwidXNlciI6InRlc3QifQ.wmABdXUii53ydG2tue13bLTTZXT8cnVP3yNK4L19OKY
