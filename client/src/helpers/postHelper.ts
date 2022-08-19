@@ -51,3 +51,8 @@ export function toggleLikedPost(id:string, token:string,username:string){
         method:"POST"
     })
 }
+
+export function getLikedPostsByUsername(username:string){
+    let uri = `${process.env.REACT_APP_BACKEND_URI}/post/like/${username}`
+    return fetch(uri)
+}

@@ -31,7 +31,6 @@ function Home(props:any){
                 setPosts(res_json)
             })
 
-            setPosts(null)
         }
         
     },[searchParams,page,updatePosts,feedSection])
@@ -49,7 +48,7 @@ function Home(props:any){
                     onChange={switchFeed}
                     mt="xl"
                     fullWidth
-                    value={feedSection}
+                    defaultValue={feedSection}
                     data={[
                         { label: 'Friends', value: 'friends' },
                         { label: 'Explore', value: 'explore' }

@@ -468,6 +468,6 @@ func GetLikedPostsByUsername(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{"posts": posts})
+	c.JSON(200, gin.H{"data": posts})
 
 }

@@ -55,5 +55,10 @@ POST http://localhost:3001/user/invitation/test/callummclu/eyJhbGciOiJIUzI1NiIsI
 
 GET http://localhost:3001/feed/friends/callumTest
 
-// post id = 50
-// token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE2NjA5NDQ2NjQsImlzcyI6Imp3dGdvLmlvIiwidXNlciI6InRlc3QifQ.wmABdXUii53ydG2tue13bLTTZXT8cnVP3yNK4L19OKY
+###
+
+POST http://localhost:3001/post/like/50/test/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE2NjA5NDQ2NjQsImlzcyI6Imp3dGdvLmlvIiwidXNlciI6InRlc3QifQ.wmABdXUii53ydG2tue13bLTTZXT8cnVP3yNK4L19OKY
+
+###
+
+GET http://localhost:3001/post/like/callummclu

@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom"
 import { PuffLoader } from "react-spinners"
 import styled from "styled-components"
 import { Post } from "../components/post"
-import { getPostsByUsername } from "../helpers/postHelper"
+import { getLikedPostsByUsername, getPostsByUsername } from "../helpers/postHelper"
 import { acceptFriendRequest, getSingleUser, sendInvitation } from "../helpers/userHelper"
 import useAuth from "../hooks/useAuth"
 import { User } from "../Types/auth"
@@ -17,26 +17,37 @@ function UserProfile(props:any){
 
     const {user,loggedIn} = useAuth()
 
+    const [feedSection, setFeedSection] = useState("posts")
+
+
     const [updatePosts, setUpdatePosts] = props.updatePosts
     const [userData,setUserData] = useState<any>(null)
     const [posts,setPosts] = useState<any>()
     
     useEffect(()=>{
-        getPostsByUsername(username as string)
-            .then(async (res:any) => {
-                let res_json = await res.json()
-                setPosts(res_json)
-            })
-    },[updatePosts])
+        if(feedSection == "posts"){
+            getPostsByUsername(username as string)
+             .then(async (res:any) => {
+                 let res_json = await res.json()
+                 setPosts(res_json)
+             })
+         } else {
+             getLikedPostsByUsername(username as string)
+                 .then(async (res:any) => {
+                     let res_json = await res.json()
+                     setPosts(res_json)
+                 })
+         }
+    },[updatePosts,feedSection])
 
 
     useEffect(()=>{
         getSingleUser(username as string)
-            .then(async (res:any) => {
-                let res_json = await res.json()
-                setUserData(res_json.data)
-            })
-    },[])
+        .then(async (res:any) => {
+            let res_json = await res.json()
+            setUserData(res_json.data)
+        })
+    },[feedSection])
 
     const redirectToUser = (username:string) => {
         window.location.href = window.location.origin + "/users/" + username 
@@ -97,6 +108,10 @@ function UserProfile(props:any){
         setUpdatePosts(!updatePosts)
     }
 
+    const switchFeed = (e:any) => {
+        setFeedSection(e)
+    }
+
     return (
         <>
            <Container>
@@ -105,9 +120,10 @@ function UserProfile(props:any){
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><Group mb={"xl"}><Avatar src={userData?.display_image} size={128} radius={100} /><div><Title ml="md">{username}</Title><Text ml="md">{userData?.description ?? ""}</Text></div></Group>{(loggedIn && checkUserNotSelfOrFriend()) && <Button onClick={addUser}>Add</Button>}</div>
 
                     {loggedIn && <SegmentedControl
-                    onChange={()=>{}}
+                    onChange={switchFeed}
                     mt="xl"
                     fullWidth
+                    defaultValue={feedSection}
                     data={[
                         { label: 'Posts', value: 'posts' },
                         { label: 'Likes', value: 'likes' }
