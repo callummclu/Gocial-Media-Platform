@@ -1,4 +1,4 @@
-import { useRef  } from 'react';
+import { useEffect, useRef  } from 'react';
 import useAuth from '../hooks/useAuth';
 import { LogInUser } from '../Types/auth';
 import { Button, Card, PasswordInput, TextInput, Title, Text} from '@mantine/core'
@@ -15,14 +15,23 @@ function Login(props:any) {
       password: passwordRef.current!.value
     }
     await login(LoginParams)
+
+    redirectHome()
   }
+
+  const redirectHome = () => {
+    window.location.href = window.location.origin
+  }
+
+  useEffect(()=>{
+    loggedIn && redirectHome()
+  },[])
 
   return (
     <>
     <div style={{"display":"flex","alignItems":"center","justifyContent":"center","height":"calc(100vh - 150px)"}}>
       <Card p="xl" shadow="sm" radius="md" withBorder style={{"width":"370px"}}>
     
-    {loggedIn ? window.location.href = window.location.origin : (
     <>
     
         <Title mt={"sm"} order={1}>Log In</Title>
@@ -35,8 +44,6 @@ function Login(props:any) {
         </form>
 
     </>
-    
-    )}
         </Card>
     </div>
     </>
