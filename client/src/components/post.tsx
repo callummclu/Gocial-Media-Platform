@@ -1,4 +1,4 @@
-import { Title, Text, Card, Button, Menu } from "@mantine/core"
+import { Title, Text, Card, Button, Menu, Chip, Divider, UnstyledButton } from "@mantine/core"
 import styled from "styled-components"
 import ReactMarkdown from 'react-markdown'
 import dayjs from "dayjs"
@@ -6,13 +6,15 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import {removePost} from '../helpers/postHelper'
 import {BsThreeDots} from 'react-icons/bs'
 import {BiTrash} from 'react-icons/bi'
-import {FiEdit2} from 'react-icons/fi'
+import {AiFillLike,AiOutlineLike} from 'react-icons/ai'
 import useAuth from "../hooks/useAuth"
+import { useState } from "react"
 
 export const Post = (props:any) => {
 
     const [updatePosts, setUpdatePosts] = props.updatePosts
     const {user} = useAuth()
+    const [likeToggle, setLikesToggle] = useState(false)
 
     dayjs.extend(relativeTime)
 
@@ -29,6 +31,10 @@ export const Post = (props:any) => {
 
     const redirectToUser = (username:string) => {
         window.location.href = window.location.origin + "/users/" + username 
+    }
+
+    const toggleLike = () => {
+        setLikesToggle(!likeToggle)
     }
     
     return (
@@ -57,6 +63,8 @@ export const Post = (props:any) => {
             <Text className="content">
                 <ReactMarkdown>{props.content}</ReactMarkdown>
             </Text>
+            <Divider/>
+            <Text pt="sm" style={{display:"flex",alignItems:"center",fontSize:"12px",gap:"10px"}}><UnstyledButton onClick={toggleLike}>{likeToggle ? <AiFillLike size={24}/> : <AiOutlineLike size={24}/>}</UnstyledButton> 0</Text>
         </PostContainer>
         </Card>
     )
