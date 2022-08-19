@@ -1,5 +1,5 @@
-import { Container, Divider, Title, Text, SegmentedControl } from "@mantine/core"
-import { useEffect, useState } from "react"
+import { Container, Divider, Title, Text, SegmentedControl, Center, TextInput } from "@mantine/core"
+import { useEffect, useRef, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { ClimbingBoxLoader, PuffLoader } from "react-spinners"
 import styled from "styled-components"
@@ -25,7 +25,6 @@ function Home(props:any){
                 setPosts(res_json)
             })
         } else {
-
             getFeedByUsername(user?.username as string)
             .then(async (res:any) => {
                 let res_json = await res.json()
@@ -46,7 +45,6 @@ function Home(props:any){
         <Container>
             <Container>
                 {loggedIn && <CreateNewPost updatePosts={[updatePosts, setUpdatePosts]}/>}
-                <PostContainer>
                 {loggedIn && <SegmentedControl
                     onChange={switchFeed}
                     mt="xl"
@@ -57,6 +55,8 @@ function Home(props:any){
                         { label: 'Explore', value: 'explore' }
                     ]}
                     />}
+                <PostContainer>
+                
                     {(posts?.data) ? (posts.data).map((e:any)=><Post {...e} updatePosts={[updatePosts, setUpdatePosts]} key={user?.username+e.title+e.content}/>) :<div style={{width:"100%",height:"calc(100vh - 110px)",display:"flex",alignItems:"center",justifyContent:"center"}}><PuffLoader color="gray" size={20}/></div>}
                 </PostContainer>
             </Container>

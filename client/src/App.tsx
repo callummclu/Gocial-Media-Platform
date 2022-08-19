@@ -11,6 +11,7 @@ import UserSettings from './pages/userSettings';
 import {Error} from './components/error'
 import useAuth from './hooks/useAuth';
 
+
 function App() {
 
   const {loggedIn,reload} = useAuth()
@@ -21,6 +22,7 @@ function App() {
   },[updatePosts])
 
   return(
+    <>
     <BrowserRouter>
       <Navbar/>
       {loggedIn && <NewPost updatePosts={[updatePosts, setUpdatePosts]}/>}
@@ -34,6 +36,7 @@ function App() {
         <Route path="users/:username/settings" element={<UserSettings />}/>
       </Routes>
     </BrowserRouter>
+    </>
   )
 }
 
