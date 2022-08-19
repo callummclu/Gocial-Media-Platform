@@ -1,7 +1,7 @@
-import { Container, Divider, Title, Text, SegmentedControl, Center, TextInput } from "@mantine/core"
-import { useEffect, useRef, useState } from "react"
+import { Container, SegmentedControl } from "@mantine/core"
+import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
-import { ClimbingBoxLoader, PuffLoader } from "react-spinners"
+import { PuffLoader } from "react-spinners"
 import styled from "styled-components"
 import { CreateNewPost } from "../components/createNewPost"
 import { Post } from "../components/post"
@@ -9,7 +9,7 @@ import { getFeedByUsername, getPosts } from "../helpers/postHelper"
 import useAuth from "../hooks/useAuth"
 
 function Home(props:any){
-    const [searchParams,setSearchParams] = useSearchParams()
+    const [searchParams] = useSearchParams()
     const [posts,setPosts] = useState<any>()
     const [updatePosts, setUpdatePosts] = props.updatePosts
     const [page, setPage] = useState<number>(1)
@@ -18,7 +18,7 @@ function Home(props:any){
 
     useEffect(()=>{
         let searchParameters = searchParams.get("searchParams")
-        if(feedSection == "explore"){
+        if(feedSection === "explore"){
             getPosts(searchParameters as string,"1","20")
             .then(async (res:any) => {
                 let res_json = await res.json()

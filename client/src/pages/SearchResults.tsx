@@ -3,11 +3,10 @@ import { useEffect,useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { PuffLoader } from "react-spinners"
 import styled from "styled-components"
-import { getUserDetails } from "../api/users"
 import * as userHelper from "../helpers/userHelper"
 
 const SearchResults = () => {
-    const [searchParams,setSearchParams] = useSearchParams()
+    const [searchParams] = useSearchParams()
     const [users,setUsers] = useState<any>()
     const [page, setPage] = useState<number>(1)
 
@@ -35,7 +34,7 @@ const SearchResults = () => {
             ): <div style={{width:"100%",height:"calc(100vh - 110px)",display:"flex",alignItems:"center",justifyContent:"center"}}><PuffLoader color="gray" size={20}/></div>}
             <br/>
             <Group style={{display:"flex",flexDirection:"column",alignItems:"center","justifyContent":"center"}}>
-                <Pagination page={page} total={users?.pages ?? 0} onChange={setPage}/>
+                <Pagination mb="xl" page={page} total={users?.pages ?? 0} onChange={setPage}/>
             </Group>
         </Container>
         </UserResultContainer>

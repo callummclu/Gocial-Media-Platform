@@ -37,7 +37,9 @@ export const Post = (props:any) => {
         {user?.username === props.username && <div style={{position:"absolute",top:25,right:25}}>
             <Menu position="left-start" width={130}>
                 <Menu.Target>
-                    <BsThreeDots style={{cursor:"pointer"}} color="gray"/>
+                    <div>
+                        <BsThreeDots style={{cursor:"pointer"}} color="gray"/>
+                    </div>
                 </Menu.Target>
 
                 <Menu.Dropdown style={{right:"0"}}>

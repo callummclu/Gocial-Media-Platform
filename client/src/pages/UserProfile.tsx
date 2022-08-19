@@ -1,10 +1,9 @@
 import { Container, Title, Text, Divider, Group, Card, Avatar, Button, SegmentedControl } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
 import { useEffect, useState } from "react"
-import { useParams, useSearchParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { PuffLoader } from "react-spinners"
 import styled from "styled-components"
-import { resolveModuleNameFromCache } from "typescript"
 import { Post } from "../components/post"
 import { getPostsByUsername } from "../helpers/postHelper"
 import { acceptFriendRequest, getSingleUser, sendInvitation } from "../helpers/userHelper"
@@ -45,13 +44,13 @@ function UserProfile(props:any){
 
 
     const checkUserNotSelfOrFriend = () => {
-        let SameUser = (user?.username) == username
+        let SameUser = (user?.username) === username
         let InFriends = (((user?.friends ?? [])).includes(username || "21321321321"))
         return !(SameUser || InFriends)
     }
 
     const checkUserIsSelf = () => {
-        let sameUser = (user?.username) == username
+        let sameUser = (user?.username) === username
         return (loggedIn && sameUser)
     }
 

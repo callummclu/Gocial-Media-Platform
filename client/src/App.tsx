@@ -10,6 +10,8 @@ import { NewPost } from './components/newPost';
 import UserSettings from './pages/userSettings';
 import {Error} from './components/error'
 import useAuth from './hooks/useAuth';
+import ScrollToTop from './helpers/scrollToTop';
+import { Footer } from './components/footer';
 
 
 function App() {
@@ -26,6 +28,7 @@ function App() {
     <BrowserRouter>
       <Navbar/>
       {loggedIn && <NewPost updatePosts={[updatePosts, setUpdatePosts]}/>}
+      <ScrollToTop/>
       <Routes>
         <Route path="*" element={<Error/>}/>
         <Route path="" element={<Home updatePosts={[updatePosts, setUpdatePosts]}/>}/>
@@ -35,6 +38,7 @@ function App() {
         <Route path="users/:username" element={<UserProfile updatePosts={[updatePosts, setUpdatePosts]}/>}/>
         <Route path="users/:username/settings" element={<UserSettings />}/>
       </Routes>
+      <Footer/>
     </BrowserRouter>
     </>
   )
