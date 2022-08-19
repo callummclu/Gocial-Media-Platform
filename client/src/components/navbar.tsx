@@ -89,23 +89,46 @@ export const Navbar = (props:any) => {
 
     return (
         <>
+        <StyledDiv>
         <NavbarStyled>
             <div style={{width: 150, cursor:"pointer" }}>
                 <Image src="https://i.imgur.com/5X5MMzn.png" onClick={()=>window.location.href = window.location.origin}/> 
             </div>
                 
             <Group style={{display:"flex","justifyContent":"center",height:"70px"}}>
-            <form onSubmit={searchUsersSubmit}>
+            <form className='searchInBar' onSubmit={searchUsersSubmit}>
                     <TextInput placeholder="search users..." ref={searchQueryRef}/>    
-                </form>
+            </form>
             {loggedIn ? <NavIcon/> : <Button color="green" onClick={logInHandler}>Login</Button>}
             </Group>
         </NavbarStyled>
+            <form className='searchOutBar' onSubmit={searchUsersSubmit}>
+                    <TextInput placeholder="search users..." ref={searchQueryRef}/>    
+            </form>
         <Divider pb="xl"/>
-        
+        </StyledDiv>
         </>
     )
 }
+
+const StyledDiv = styled.div`
+    & .searchInBar{
+        display:block;
+    }
+    & .searchOutBar{
+        display:none;
+        margin:30px;
+    }
+
+    @media screen and (max-width:767px){
+        & .searchInBar{
+            display:none;
+        }
+        & .searchOutBar{
+            display:block;
+        }
+    }
+`
 
 const NavbarStyled = styled.div`
     display:flex;

@@ -119,7 +119,7 @@ function UserProfile(props:any){
                 <Card style={{width:"70%"}}>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><Group mb={"xl"}><Avatar src={userData?.display_image} size={128} radius={100} /><div><Title ml="md">{username}</Title><Text ml="md">{userData?.description ?? ""}</Text></div></Group>{(loggedIn && checkUserNotSelfOrFriend()) && <Button onClick={addUser}>Add</Button>}</div>
 
-                    {loggedIn && <SegmentedControl
+                    <SegmentedControl
                     onChange={switchFeed}
                     mt="xl"
                     fullWidth
@@ -128,7 +128,7 @@ function UserProfile(props:any){
                         { label: 'Posts', value: 'posts' },
                         { label: 'Likes', value: 'likes' }
                     ]}
-                    />}
+                    />
                 <PostContainer></PostContainer>
                     <PostContainer>
                     {(posts?.data) ? (posts.data).map((e:any)=><Post {...e} updatePosts={[updatePosts, setUpdatePosts]} key={username+e.title}/>) :<div style={{width:"100%",height:"calc(100vh - 110px)",display:"flex",alignItems:"center",justifyContent:"center"}}><PuffLoader color="gray" size={20}/></div>}
