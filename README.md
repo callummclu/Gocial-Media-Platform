@@ -8,6 +8,14 @@
 ~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~
 
+### Features
+
+- users can post
+- users can add other users as friends via invitations
+- users can see their friends posts or all most recent posts
+- user can login/signup
+
+
 ### Tech Stack
 
 `"Blue" Stack`
